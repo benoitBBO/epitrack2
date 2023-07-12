@@ -36,6 +36,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserLoginDto userLoginDto = null;
         try {
             userLoginDto = new ObjectMapper().readValue(request.getInputStream(), UserLoginDto.class);
+            System.out.println("userLoginDto= "+userLoginDto);
         }
         catch (IOException e){
             e.printStackTrace();
@@ -57,5 +58,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sign(Algorithm.HMAC256(secret));
 
         response.addHeader("Authorization", "Bearer "+jwt);
+        System.out.println("succesfullAuthentication ; token = "+jwt);
     }
 }
