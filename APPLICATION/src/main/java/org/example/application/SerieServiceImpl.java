@@ -1,10 +1,12 @@
 package org.example.application;
 
+import org.example.domaine.catalog.Movie;
 import org.example.domaine.catalog.Serie;
 import org.example.infrastructure.repository.ISerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +33,9 @@ public class SerieServiceImpl implements ISerieService {
     @Override
     public void updateSerie(Serie updatedSerie) {
         repository.save(updatedSerie);
+    }
+    @Override
+    public List<Serie> findFirst4ByOrderByTotalRatingDesc() {
+        return repository.findFirst4ByOrderByTotalRatingDesc();
     }
 }

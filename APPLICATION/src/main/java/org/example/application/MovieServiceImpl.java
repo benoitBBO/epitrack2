@@ -39,4 +39,8 @@ public class MovieServiceImpl implements IMovieService {
     public void delete(Long id) {
         movieRepository.deleteById(id);
     }
+    @Override
+    public List<Movie> findFirst4ByOrderByTotalRatingDesc() {
+        return movieRepository.findFirst4ByOrderByTotalRatingDesc();
+    }
 }
