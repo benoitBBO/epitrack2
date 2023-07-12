@@ -10,4 +10,5 @@ public interface IMovieService {
     List<Movie> findAll();
     Movie update(Movie movie);
     void delete(Long id);
+    List<Movie> findFirst4ByOrderByTotalRatingDesc();
 }
