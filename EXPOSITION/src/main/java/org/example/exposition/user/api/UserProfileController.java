@@ -1,6 +1,6 @@
-package org.example.exposition.api;
+package org.example.exposition.user.api;
 
-import org.example.application.IUserProfileService;
+import org.example.application.user.IUserProfileService;
 import org.example.domaine.user.UserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
