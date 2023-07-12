@@ -1,8 +1,9 @@
-package org.example.application;
+package org.example.application.user;
 
 import org.example.domaine.user.UserProfile;
 
 public interface IUserProfileService {
+
     void createUserProfile(UserProfile userProfile);
 
     UserProfile findUserProfileById(Long id);
@@ -10,5 +11,7 @@ public interface IUserProfileService {
     void updateUserProfile(UserProfile userProfile);
 
     void deleteUserProfile(Long id);
+
+    public UserProfile findUserProfileByEmail (String email);
 
 }
