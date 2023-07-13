@@ -52,7 +52,8 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception{
        http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/**").permitAll()
                 .anyRequest()
                 .authenticated();
 
@@ -60,7 +61,8 @@ public class SecurityConfiguration {
                         authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))))
                 .csrf().disable()  // le désactiver quand Front dispo
                 .cors(Customizer.withDefaults())
-                .formLogin().disable();
+                .formLogin().disable()
+        ;
 
         return http.build();
     }
