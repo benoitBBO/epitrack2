@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface IMovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findFirst4ByOrderByTotalRatingDesc();
+    List<Movie> findByTitleContainsIgnoreCase(String title);
 }

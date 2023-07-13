@@ -38,4 +38,8 @@ public class SerieServiceImpl implements ISerieService {
     public List<Serie> findFirst4ByOrderByTotalRatingDesc() {
         return repository.findFirst4ByOrderByTotalRatingDesc();
     }
+    @Override
+    public List<Serie> findByTitleContains(String title){
+        return repository.findByTitleContainsIgnoreCase(title);
+    }
 }

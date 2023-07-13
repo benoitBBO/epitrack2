@@ -56,6 +56,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withArrayClaim("roles", roles.toArray(new String[roles.size()]))
                 .sign(Algorithm.HMAC256(secret));
 
+
         //objet json pour pouvoir mettre le jeton et le username dans le body
         Map<String, Object> body = new HashMap<>();
         body.put("token", "Bearer "+jwt);

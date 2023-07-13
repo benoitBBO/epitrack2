@@ -43,4 +43,8 @@ public class MovieServiceImpl implements IMovieService {
     public List<Movie> findFirst4ByOrderByTotalRatingDesc() {
         return movieRepository.findFirst4ByOrderByTotalRatingDesc();
     }
+    @Override
+    public List<Movie> findByTitleContains(String title){
+        return movieRepository.findByTitleContainsIgnoreCase(title);
+    }
 }

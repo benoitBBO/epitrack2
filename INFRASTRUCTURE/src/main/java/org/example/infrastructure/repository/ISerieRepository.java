@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface ISerieRepository extends JpaRepository <Serie, Long> {
     List<Serie> findFirst4ByOrderByTotalRatingDesc();
+    List<Serie> findByTitleContainsIgnoreCase(String title);
 }
