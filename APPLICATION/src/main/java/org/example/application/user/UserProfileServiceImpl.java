@@ -31,8 +31,8 @@ public class UserProfileServiceImpl implements IUserProfileService {
         userProfileRepository.deleteById(id);
     }
     @Override
-    public UserProfile findUserProfileByEmail(String email) {
-        System.out.println("UserProfileServie rech par email: "+email);
-        return userProfileRepository.findByEmail(email);
+    public UserProfile findUserProfileByUsername(String username) {
+        System.out.println("UserProfileServie rech par username: "+ username);
+        return userProfileRepository.findByUserName(username);
     }
 }

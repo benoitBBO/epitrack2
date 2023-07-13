@@ -12,6 +12,6 @@ public interface IUserProfileService {
 
     void deleteUserProfile(Long id);
 
-    public UserProfile findUserProfileByEmail (String email);
+    public UserProfile findUserProfileByUsername (String username);
 
 }

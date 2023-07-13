@@ -19,16 +19,19 @@ public class UserLoginService implements UserDetailsService {
     @Autowired
     IUserProfileService userProfileService;
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //appel service user, find by email
-        UserProfile userProfile = userProfileService.findUserProfileByEmail(email);
+        UserProfile userProfile = userProfileService.findUserProfileByUsername(username);
+        System.out.println("retour requête by username: " + userProfile.getUserName()
+                           + " " + userProfile.getPassword()
+                            + " " + userProfile.getRole());
         if(userProfile!=null){
             //on alimente la liste des rôles (1 seul rôle) dans authorities
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(userProfile.getRole().getName()));
 
             //on charge le User pour SpringSecurity
-            return new User(userProfile.getEmail(), userProfile.getPassword(), authorities);
+            return new User(userProfile.getUserName(), userProfile.getPassword(), authorities);
         }
         else {
             throw new UsernameNotFoundException("profil utilisateur non trouvé");
