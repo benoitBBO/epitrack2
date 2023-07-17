@@ -3,8 +3,10 @@ package org.example.exposition.serie.api;
 import org.example.application.ISerieService;
 import org.example.domaine.catalog.Movie;
 import org.example.domaine.catalog.Serie;
+import org.example.exposition.movie.dto.MovieDetailDto;
 import org.example.exposition.movie.dto.MovieMinDto;
 import org.example.exposition.serie.converter.SerieConverter;
+import org.example.exposition.serie.dto.SerieDetailDto;
 import org.example.exposition.serie.dto.SerieMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +41,16 @@ public class SerieController {
     @DeleteMapping("/{id}")
     public void deleteSerie(@PathVariable("id") Long id){
         service.deleteSerie(id);
+    }
+    @GetMapping
+    public List<SerieDetailDto> findAll(){
+        List<Serie> seriesEntity = service.findAll();
+        List<SerieDetailDto> seriesDetailDto = new ArrayList<>();
+        for (Serie serie:seriesEntity) {
+            SerieDetailDto serieDetailDto = serieConverter.convertEntityToDetailDto(serie);
+            seriesDetailDto.add(serieDetailDto);
+        }
+        return seriesDetailDto;
     }
     @GetMapping("/best4")
     public List<Serie> findFirst4ByOrderByTotalRatingDesc(){

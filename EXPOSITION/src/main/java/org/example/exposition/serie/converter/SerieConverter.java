@@ -1,9 +1,6 @@
 package org.example.exposition.serie.converter;
 
-import org.example.domaine.catalog.Movie;
 import org.example.domaine.catalog.Serie;
-import org.example.exposition.movie.dto.MovieDetailDto;
-import org.example.exposition.movie.dto.MovieMinDto;
 import org.example.exposition.serie.dto.SerieDetailDto;
 import org.example.exposition.serie.dto.SerieMinDto;
 import org.modelmapper.ModelMapper;
