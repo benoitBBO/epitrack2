@@ -35,7 +35,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserLoginDto userLoginDto = null;
         try {
             userLoginDto = new ObjectMapper().readValue(request.getInputStream(), UserLoginDto.class);
-            System.out.println("userLoginDto= "+userLoginDto);
         }
         catch (IOException e){
             e.printStackTrace();
