@@ -8,6 +8,7 @@ import org.example.exposition.movie.dto.MovieMinDto;
 import org.example.exposition.serie.converter.SerieConverter;
 import org.example.exposition.serie.dto.SerieDetailDto;
 import org.example.exposition.serie.dto.SerieMinDto;
+import org.example.exposition.tmdb.dto.TmdbDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,18 +25,21 @@ public class SerieController {
     SerieConverter serieConverter;
 
     @PostMapping
-    public void createSerie(@RequestBody Serie serie){
-        service.create(serie);
+//    public void createSerie(@RequestBody Serie serie){
+//        service.create(serie);
+//    }
+    public void createSerie(@RequestBody TmdbDto json){
+        service.create(serieConverter.convertTmdbDtoToEntity(json));
     }
 
     @GetMapping("/{id}")
-    public Serie findyById(@PathVariable("id") Long id){
-        return service.findById(id);
+    public SerieDetailDto findyById(@PathVariable("id") Long id){
+        return serieConverter.convertEntityToDetailDto(service.findById(id));
     }
 
     @PutMapping
-    public void updateSerie(@RequestBody Serie updatedSerie){
-        service.updateSerie(updatedSerie);
+    public void updateSerie(@RequestBody TmdbDto json){
+        service.updateSerie(serieConverter.convertTmdbDtoToEntity(json));
     }
 
     @DeleteMapping("/{id}")

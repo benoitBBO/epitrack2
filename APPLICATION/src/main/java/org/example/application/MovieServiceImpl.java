@@ -23,7 +23,7 @@ public class MovieServiceImpl implements IMovieService {
     public Movie findById(Long id) {
         Optional<Movie> optionalTask = movieRepository.findById(id);
         if (!optionalTask.isPresent()) {
-            throw new EntityNotFoundException("Le films avec l'id "+id+" est introuvable");
+            throw new EntityNotFoundException("Le film avec l'id "+id+" est introuvable");
         }
         return optionalTask.get();
     }

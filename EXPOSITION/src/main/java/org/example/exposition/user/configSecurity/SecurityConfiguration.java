@@ -74,28 +74,14 @@ public class SecurityConfiguration {
         // set permissions on endpoints
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/").permitAll()
-                .antMatchers(HttpMethod.GET, "/movies/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/series/*").permitAll()
-                .antMatchers(HttpMethod.GET,"/user").hasRole("USER")
-                .antMatchers(HttpMethod.POST,"/usermovie").permitAll()
+                .antMatchers(HttpMethod.POST,"/users/register").permitAll()
+                .antMatchers(HttpMethod.GET).permitAll()
                 .anyRequest().authenticated();
 
-        // add JWT authentication filter
+        // add JWT filter
         http.addFilterBefore(new JWTTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilter(new JWTAuthenticationFilter (
+            .addFilter(new JWTAuthenticationFilter (
                         authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))));
-
-        // add JWT token filter
-        //http.addFilterBefore(new JWTTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        //add JWT filter (token first, then authentication)
-        //JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(
-        //        authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))
-        //);
-        //http.addFilterBefore(new JWTTokenFilter(),
-        //                    jwtAuthenticationFilter.getClass()
-        //                    );
 
         return http.build();
     }
