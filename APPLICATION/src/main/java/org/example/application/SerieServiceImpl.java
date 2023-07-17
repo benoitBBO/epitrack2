@@ -24,7 +24,10 @@ public class SerieServiceImpl implements ISerieService {
         Optional<Serie> clientOptional = repository.findById(id);
         return clientOptional.orElse(null);
     }
-
+    @Override
+    public List<Serie> findAll() {
+        return repository.findAll();
+    }
     @Override
     public void deleteSerie(Long id) {
         repository.deleteById(id);
