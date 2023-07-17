@@ -5,6 +5,7 @@ import org.example.domaine.catalog.Movie;
 import org.example.exposition.movie.converter.MovieConverter;
 import org.example.exposition.movie.dto.MovieDetailDto;
 import org.example.exposition.movie.dto.MovieMinDto;
+import org.example.exposition.tmdb.dto.TmdbDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,11 @@ public class MovieController {
     @Autowired
     MovieConverter movieConverter;
     @PostMapping
-    public void createMovie(@RequestBody MovieDetailDto detailDto) {
-        movieService.create(movieConverter.convertDetailDtoToEntity(detailDto));
+//    public void createMovie(@RequestBody MovieDetailDto detailDto) {
+//        movieService.create(movieConverter.convertDetailDtoToEntity(detailDto));
+//    }
+    public void createMovie(@RequestBody TmdbDto detailDto) {
+        movieService.create(movieConverter.convertTmdbDtoToEntity(detailDto));
     }
     @GetMapping("/{id}")
     public MovieDetailDto findById(@PathVariable("id")Long id) {

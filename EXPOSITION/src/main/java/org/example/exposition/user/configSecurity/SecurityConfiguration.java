@@ -40,9 +40,8 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST"));
-        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Origin", "X-Requested-With", "Content-Type", "Accept"));
         configuration.setAllowCredentials(true);
-        configuration.setExposedHeaders(Arrays.asList("Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -76,11 +75,13 @@ public class SecurityConfiguration {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST,"/users").permitAll()
+                .antMatchers(HttpMethod.POST).permitAll()
                 .antMatchers(HttpMethod.GET).permitAll()
                 .anyRequest().authenticated();
 
         // add JWT authentication filter
-        http.addFilter(new JWTAuthenticationFilter (
+        http.addFilterBefore(new JWTTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(new JWTAuthenticationFilter (
                         authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))));
 
         // add JWT token filter
