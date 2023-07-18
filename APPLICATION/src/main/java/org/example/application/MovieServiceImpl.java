@@ -21,11 +21,11 @@ public class MovieServiceImpl implements IMovieService {
     }
     @Override
     public Movie findById(Long id) {
-        Optional<Movie> optionalTask = movieRepository.findById(id);
-        if (!optionalTask.isPresent()) {
+        Optional<Movie> optionalItem = movieRepository.findById(id);
+        if (!optionalItem.isPresent()) {
             throw new EntityNotFoundException("Le film avec l'id "+id+" est introuvable");
         }
-        return optionalTask.get();
+        return optionalItem.get();
     }
     @Override
     public List<Movie> findAll() {

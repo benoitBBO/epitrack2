@@ -29,7 +29,6 @@ public class UserLoginService implements UserDetailsService {
             //on alimente la liste des rôles (1 seul rôle) dans authorities
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(userProfile.getRole().getName()));
-
             //on charge le User pour SpringSecurity
             return new User(userProfile.getUserName(), userProfile.getPassword(), authorities);
         }
