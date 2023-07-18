@@ -28,9 +28,9 @@ public class UserProfileController {
         }
         UserProfile userProfile = userConverter.convertUserDtoToUserProfile(userDto);
         userProfileService.createUserProfile(userProfile);
-        return ResponseEntity.ok().body("Utilisateur créé");
+        //return ResponseEntity.ok().body("Utilisateur créé");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Utilisateur créé");
     }
-
 
     @GetMapping("/{id}")
     public UserProfile findUserById(@PathVariable("id") Long id){

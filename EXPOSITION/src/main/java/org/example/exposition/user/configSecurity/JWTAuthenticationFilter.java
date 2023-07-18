@@ -26,8 +26,6 @@ import java.util.Map;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    @Autowired
-    IUserProfileService userService;
     private String secret = "&GMxGrrHl1&RtKevTeFBETd!GqL1*GLo"; // voir pour cacher le secret dans application.properties
     private AuthenticationManager authenticationManager;
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager){
@@ -62,14 +60,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         //objet json pour pouvoir mettre le jeton et le username dans le body
         Map<String, Object> body = new HashMap<>();
-        UserProfile user = userService.findUserProfileByUsername(springUser.getUsername());
-        //TODO réfléchir à un meilleur moyen
         body.put("token", "Bearer "+jwt);
         body.put("username", springUser.getUsername());
-        body.put("id",user.getId());
-        body.put("lastname",user.getLastName());
-        body.put("firstname",user.getFirstName());
-        body.put("email",user.getEmail());
         System.out.println("succesfullAuthentication ; token = "+jwt);
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));
         response.setContentType("application/json");
