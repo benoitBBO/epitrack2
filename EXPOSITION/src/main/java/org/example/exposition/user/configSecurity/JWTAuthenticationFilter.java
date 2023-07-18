@@ -61,16 +61,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         //objet json pour pouvoir mettre le jeton et le username dans le body
         Map<String, Object> body = new HashMap<>();
-        System.out.println("avant instanciation userService");
-        //UserProfileServiceImpl userService = new UserProfileServiceImpl();
-        //UserProfile user = userService.findUserProfileByUsername(springUser.getUsername());
-        //TODO réfléchir à un meilleur moyen
         body.put("token", "Bearer "+jwt);
         body.put("username", springUser.getUsername());
-        //body.put("id",user.getId());
-        //body.put("lastname",user.getLastName());
-        //body.put("firstname",user.getFirstName());
-        //body.put("email",user.getEmail());
         System.out.println("succesfullAuthentication ; token = "+jwt);
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));
         response.setContentType("application/json");
