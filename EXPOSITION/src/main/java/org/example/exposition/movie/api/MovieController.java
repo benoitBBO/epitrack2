@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/movies")
-@CrossOrigin(origins = "http://localhost:4200") // Remplacez par l'URL autorisée pour le cross-domain
 public class MovieController {
     @Autowired
     IMovieService movieService;

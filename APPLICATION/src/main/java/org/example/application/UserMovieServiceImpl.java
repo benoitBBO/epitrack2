@@ -43,4 +43,14 @@ public class UserMovieServiceImpl implements IUserMovieService {
     public void delete(Long id) {
         userMovieRepository.deleteById(id);
     }
+
+    @Override
+    public List<UserMovie> findFirst4ByUserIdOrderByUserRatingDesc(Long userId) {
+        return userMovieRepository.findFirst4ByUserIdOrderByUserRatingDesc(userId);
+    }
+
+    @Override
+    public List<UserMovie> findAllByUserIdOrderByUserRatingDesc(Long userId) {
+        return userMovieRepository.findAllByUserIdOrderByUserRatingDesc(userId);
+    }
 }
