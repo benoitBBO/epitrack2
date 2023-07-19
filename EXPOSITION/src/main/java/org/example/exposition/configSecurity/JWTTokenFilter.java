@@ -1,4 +1,4 @@
-package org.example.exposition.user.configSecurity;
+package org.example.exposition.configSecurity;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

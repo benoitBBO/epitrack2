@@ -1,5 +1,6 @@
 package org.example.application.user;
 
+import org.example.domaine.exceptions.InputMissingException;
 import org.example.domaine.exceptions.ResourceAlreadyExistsException;
 import org.example.domaine.exceptions.ResourceNotFoundException;
 import org.example.domaine.user.UserProfile;
@@ -17,11 +18,27 @@ public class UserProfileServiceImpl implements IUserProfileService {
 
     @Override
     public void createUserProfile(UserProfile user) {
+        if (user.getUserName().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty()){
+            throw new InputMissingException();
+        }
         Optional<UserProfile> optionalUserProfile = userProfileRepository.findByUserName(user.getUserName());
         if (optionalUserProfile.isPresent()){
             throw new ResourceAlreadyExistsException();
         }
         userProfileRepository.save(user);
+    }
+
+    @Override
+    public UserProfile findUserProfileByUsername(String username) {
+        System.out.println("UserProfileService rech par username: "+ username);
+        if (username.isEmpty()){
+            throw new InputMissingException();
+        }
+        Optional<UserProfile> optionalUserProfile = userProfileRepository.findByUserName(username);
+        if (!optionalUserProfile.isPresent()){
+            throw new ResourceNotFoundException();
+        }
+        return optionalUserProfile.get();
     }
 
     @Override
@@ -38,13 +55,5 @@ public class UserProfileServiceImpl implements IUserProfileService {
     public void deleteUserProfile(Long id) {
         userProfileRepository.deleteById(id);
     }
-    @Override
-    public UserProfile findUserProfileByUsername(String username) {
-        System.out.println("UserProfileServie rech par username: "+ username);
-        Optional<UserProfile> optionalUserProfile = userProfileRepository.findByUserName(username);
-        if (!optionalUserProfile.isPresent()){
-            throw new ResourceNotFoundException();
-        }
-        return optionalUserProfile.get();
-    }
+
 }

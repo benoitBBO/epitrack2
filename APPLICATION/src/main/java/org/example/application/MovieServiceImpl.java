@@ -47,4 +47,11 @@ public class MovieServiceImpl implements IMovieService {
     public List<Movie> findByTitleContains(String title){
         return movieRepository.findByTitleContainsIgnoreCase(title);
     }
+
+    @Override
+    public void updateMovieTotalRating(Movie movie, Integer userRating) {
+        movie.setTotalRating(movie.getTotalRating()+userRating);
+        movie.setVoteCount(movie.getVoteCount()+1);
+        movieRepository.save(movie);
+    }
 }

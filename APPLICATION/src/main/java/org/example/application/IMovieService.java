@@ -12,4 +12,6 @@ public interface IMovieService {
     void delete(Long id);
     List<Movie> findFirst4ByOrderByTotalRatingDesc();
     List<Movie> findByTitleContains(String title);
+
+    void updateMovieTotalRating(Movie movie, Integer userRating);
 }
