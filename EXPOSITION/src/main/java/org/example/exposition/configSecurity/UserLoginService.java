@@ -1,4 +1,4 @@
-package org.example.exposition.user.configSecurity;
+package org.example.exposition.configSecurity;
 
 import org.example.application.user.IUserProfileService;
 import org.example.domaine.user.UserProfile;
