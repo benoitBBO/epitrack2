@@ -16,8 +16,6 @@ public class UserMovieServiceImpl implements IUserMovieService {
     IUserMovieRepository userMovieRepository;
     @Autowired
     IMovieService movieService;
-
-
     @Override
     public void create(UserMovie userMovie) {
         userMovieRepository.save(userMovie);
@@ -47,6 +45,16 @@ public class UserMovieServiceImpl implements IUserMovieService {
         userMovieRepository.deleteById(id);
     }
 
+
+    @Override
+    public List<UserMovie> findFirst4ByUserIdOrderByUserRatingDesc(Long userId) {
+        return userMovieRepository.findFirst4ByUserIdOrderByUserRatingDesc(userId);
+    }
+
+    @Override
+    public List<UserMovie> findAllByUserIdOrderByUserRatingDesc(Long userId) {
+        return userMovieRepository.findAllByUserIdOrderByUserRatingDesc(userId);
+    }
     @Override
     public void updateUserRating(Long userId, Long videoId, Integer rating) {
         Optional<UserMovie> userMovieOptional = userMovieRepository.findByUserIdAndMovieId(userId, videoId);
