@@ -1,12 +1,12 @@
 package org.example.exposition.usermovie.api;
 
 import org.example.application.IUserMovieService;
-import org.example.domaine.catalog.Movie;
 import org.example.domaine.userselection.UserMovie;
-import org.example.exposition.movie.dto.MovieMinDto;
 import org.example.exposition.usermovie.converter.UserMovieConverter;
 import org.example.exposition.usermovie.dto.UserMovieDetailDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -59,4 +59,18 @@ public class UserMovieController {
         }
         return userMoviesDetailDto;
     }
+    @PutMapping("/vote/{userId}/{movieId}/{vote}")
+    public ResponseEntity<String> updateUserMovieRating(@PathVariable("userId") Long userId,
+                                                        @PathVariable("movieId") Long movieId,
+                                                        @PathVariable("vote") Integer rating){
+        userMovieService.updateUserRating(userId, movieId, rating);
+        return ResponseEntity.status(HttpStatus.OK).body("Vote bien pris en compte");
+    }
+    //@PutMapping("/status/{userId}/{movieId}/{status}")
+    //public ResponseEntity<String> updateUserMovieStatus (@PathVariable("userId") Long userId,
+    //                                                @PathVariable("movieId") Long movieId,
+    //                                                @PathVariable("status") Integer status){
+    //    userMovieService.updateUserMovieStatus(userId, movieId, status);
+    //    return ResponseEntity.status(HttpStatus.OK).body("Le statut a bien été mis à jour");
+    //}
 }
