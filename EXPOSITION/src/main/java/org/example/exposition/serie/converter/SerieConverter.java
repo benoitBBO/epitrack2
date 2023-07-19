@@ -1,6 +1,9 @@
 package org.example.exposition.serie.converter;
 
 import org.example.domaine.catalog.*;
+import org.example.exposition.episode.dto.EpisodeDetailDto;
+import org.example.exposition.episode.dto.EpisodeMinDto;
+import org.example.exposition.season.dto.SeasonDetailDto;
 import org.example.exposition.serie.dto.SerieDetailDto;
 import org.example.exposition.serie.dto.SerieMinDto;
 import org.example.exposition.tmdb.dto.*;
@@ -67,6 +70,7 @@ public class SerieConverter {
         List<Season> seasonList = new ArrayList<>();
         for (SeasonsTmdbDto seasonDto : json.getSeasons()){
             Season season = new Season();
+            season.setTitle(seasonDto.getName());
             season.setSeasonNumber(seasonDto.getSeason_number());
             season.setOverview(seasonDto.getOverview());
             season.setImageUrl(seasonDto.getPoster_path());
@@ -76,6 +80,7 @@ public class SerieConverter {
             List<Episode> episodeList = new ArrayList<>();
             for (EpisodeTmdbDto episodeDto : seasonDto.getEpisodes()){
                 Episode episode = new Episode();
+                episode.setTitle(episodeDto.getName());
                 episode.setEpisodeNumber(episodeDto.getEpisode_number());
                 episode.setOverview(episodeDto.getOverview());
                 episode.setImageUrl(episodeDto.getStill_path());

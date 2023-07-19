@@ -3,6 +3,7 @@ package org.example.exposition.serie.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.example.domaine.catalog.Actor;
 import org.example.domaine.catalog.Genre;
+import org.example.exposition.season.dto.SeasonDetailDto;
 import org.example.exposition.season.dto.SeasonMinDto;
 
 import java.time.LocalDate;
@@ -21,9 +22,9 @@ public class SerieDetailDto {
     private List<Genre> genres;
     private List<Actor> actors;
     private String imdbRef;
-    private List<SeasonMinDto> seasons;
+    private List<SeasonDetailDto> seasons;
 
-    public SerieDetailDto(Long id, String title, String overview, LocalDate releaseDate, Integer totalRating, Integer voteCount, String imagePosterUrl, String imageLandscapeUrl, List<Genre> genres, List<Actor> actors, String imdbRef, List<SeasonMinDto> seasons) {
+    public SerieDetailDto(Long id, String title, String overview, LocalDate releaseDate, Integer totalRating, Integer voteCount, String imagePosterUrl, String imageLandscapeUrl, List<Genre> genres, List<Actor> actors, String imdbRef, List<SeasonDetailDto> seasons) {
         this.id = id;
         this.title = title;
         this.overview = overview;
@@ -129,11 +130,11 @@ public class SerieDetailDto {
         this.imdbRef = imdbRef;
     }
 
-    public List<SeasonMinDto> getSeasons() {
+    public List<SeasonDetailDto> getSeasons() {
         return seasons;
     }
 
-    public void setSeasons(List<SeasonMinDto> seasons) {
+    public void setSeasons(List<SeasonDetailDto> seasons) {
         this.seasons = seasons;
     }
 }
