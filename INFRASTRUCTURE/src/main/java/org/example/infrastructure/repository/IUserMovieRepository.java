@@ -7,8 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import java.util.Optional;
+
 @Repository
 public interface IUserMovieRepository extends JpaRepository<UserMovie, Long> {
     List<UserMovie> findAllByUserIdOrderByUserRatingDesc(Long userId);
     List<UserMovie> findFirst4ByUserIdOrderByUserRatingDesc(Long userId);
+
+    Optional<UserMovie> findByUserIdAndMovieId (Long userId, Long movieId);
+
 }

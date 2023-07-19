@@ -21,18 +21,19 @@ public class UserProfileController {
     UserConverter userConverter;
 
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@RequestBody UserDto userDto){
-        System.out.println("POST /users : userDto= " + userDto.toString());
-        if (userDto.getUserName().isEmpty() || userDto.getPassword().isEmpty() || userDto.getEmail().isEmpty()){
-            return ResponseEntity.badRequest().body("Données obligatoires vides (username, password, email");
-        }
-        UserProfile userProfile = userConverter.convertUserDtoToUserProfile(userDto);
-        userProfileService.createUserProfile(userProfile);
-        //return ResponseEntity.ok().body("Utilisateur créé");
+    public ResponseEntity<String> createUser(@RequestBody UserDto userDto){
+        userProfileService.createUserProfile(userConverter.convertUserDtoToUserProfile(userDto));
         return ResponseEntity.status(HttpStatus.CREATED).body("Utilisateur créé");
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UserDto> findUserByUsername(@PathVariable("username") String username){
+        UserDto userDto = userConverter.convertUserProfileToUserDto(userProfileService.findUserProfileByUsername(username));
+        return ResponseEntity.ok().body(userDto);
+
+    }
+
+    @GetMapping("/id/{id}")
     public UserProfile findUserById(@PathVariable("id") Long id){
         return userProfileService.findUserProfileById(id);
     }
@@ -44,8 +45,5 @@ public class UserProfileController {
     public void deleteUser(@PathVariable("id") Long id){
         userProfileService.deleteUserProfile(id);
     }
-    @GetMapping("/username/{username}")
-    public UserProfile findUserByUsername(@PathVariable("username") String username){
-        return userProfileService.findUserProfileByUsername(username);
-    }
+
 }

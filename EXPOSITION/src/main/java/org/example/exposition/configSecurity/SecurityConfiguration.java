@@ -42,7 +42,6 @@ public class SecurityConfiguration {
         return source;
     }
 
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception{
@@ -71,6 +70,8 @@ public class SecurityConfiguration {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST,"/users/register").permitAll()
+                .antMatchers(HttpMethod.POST).permitAll()  //TODO à enlever
+                .antMatchers(HttpMethod.PUT).permitAll()  //TODO à enlever
                 .antMatchers(HttpMethod.GET).permitAll()
                 .anyRequest().authenticated();
 

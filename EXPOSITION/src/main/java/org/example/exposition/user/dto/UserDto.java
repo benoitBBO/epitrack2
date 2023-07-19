@@ -2,6 +2,7 @@ package org.example.exposition.user.dto;
 
 public class UserDto {
 
+    private Long id;
     private String userName;
     private String lastName;
     private String firstName;
@@ -11,12 +12,21 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(String userName, String lastName, String firstName, String email, String password) {
+    public UserDto(Long id, String userName, String lastName, String firstName, String email, String password) {
+        this.id = id;
         this.userName = userName;
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;
         this.password = password;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUserName() {
@@ -62,7 +72,8 @@ public class UserDto {
     @Override
     public String toString() {
         return "UserDto{" +
-                "userName='" + userName + '\'' +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", email='" + email + '\'' +
