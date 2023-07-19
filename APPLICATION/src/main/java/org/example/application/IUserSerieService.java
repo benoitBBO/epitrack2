@@ -8,4 +8,6 @@ public interface IUserSerieService {
     UserSerie findById(Long id);
     UserSerie update(UserSerie userSerie);
     void delete(Long id);
+
+    void updateUserRating(Long userId, Long videoId, Integer rating);
 }

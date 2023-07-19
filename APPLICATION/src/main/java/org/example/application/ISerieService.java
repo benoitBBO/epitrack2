@@ -18,4 +18,5 @@ public interface ISerieService {
     List<Serie> findFirst4ByOrderByTotalRatingDesc();
     List<Serie> findByTitleContains(String title);
 
+    void updateSerieTotalRating(Serie serie, Integer userRating);
 }

@@ -1,9 +1,6 @@
 package org.example.exposition.common;
 
-import org.example.domaine.exceptions.ForbiddenAccessException;
-import org.example.domaine.exceptions.ResourceAlreadyExistsException;
-import org.example.domaine.exceptions.ResourceNotFoundException;
-import org.example.domaine.exceptions.UnauthorizedException;
+import org.example.domaine.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,6 +31,12 @@ public class ControlAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler
+    @ResponseBody
+    public ResponseEntity<ErrorModel> handleInputMissingException (InputMissingException ex) {
+        ErrorModel error = new ErrorModel("400", ex.getLocalizedMessage(), "Les input obligatoires ne sont pas renseignées");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler
     @ResponseBody

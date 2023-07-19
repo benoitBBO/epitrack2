@@ -17,6 +17,9 @@ public class UserConverter {
 
     public UserProfile convertUserDtoToUserProfile (UserDto userDto){
         UserProfile userProfile = new UserProfile();
+        if(userDto.getId() != null){
+            userProfile.setId(userDto.getId());
+        }
         userProfile.setUserName(userDto.getUserName());
         userProfile.setEmail(userDto.getEmail());
         userProfile.setFirstName(userDto.getFirstName());
@@ -29,5 +32,16 @@ public class UserConverter {
         userProfile.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         return userProfile;
+    }
+
+    public UserDto convertUserProfileToUserDto (UserProfile userProfile){
+        UserDto userDto = new UserDto();
+        userDto.setId(userProfile.getId());
+        userDto.setUserName(userProfile.getUserName());
+        userDto.setEmail(userProfile.getEmail());
+        userDto.setFirstName(userProfile.getFirstName());
+        userDto.setLastName(userProfile.getLastName());
+        //Ne pas remonter le password dans le DTO
+        return userDto;
     }
 }

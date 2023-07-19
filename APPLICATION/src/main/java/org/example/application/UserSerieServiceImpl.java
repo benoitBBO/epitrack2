@@ -1,5 +1,7 @@
 package org.example.application;
 
+import org.example.domaine.exceptions.ResourceNotFoundException;
+import org.example.domaine.userselection.UserMovie;
 import org.example.domaine.userselection.UserSerie;
 import org.example.infrastructure.repository.IUserSerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import java.util.Optional;
 public class UserSerieServiceImpl implements IUserSerieService {
     @Autowired
     IUserSerieRepository userSerieRepository;
+    @Autowired
+    ISerieService serieService;
+
     @Override
     public void create(UserSerie userSerie) {
         userSerieRepository.save(userSerie);
@@ -32,5 +37,22 @@ public class UserSerieServiceImpl implements IUserSerieService {
     @Override
     public void delete(Long id) {
         userSerieRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateUserRating(Long userId, Long videoId, Integer rating) {
+        Optional<UserSerie> userSerieOptional = userSerieRepository.findByUserIdAndSerieId(userId, videoId);
+        if (userSerieOptional.isEmpty()){
+            throw new ResourceNotFoundException();
+        }
+        else {
+            //mise à jour de la note utilisateur (rating)
+            UserSerie userSerie = userSerieOptional.get();
+            userSerie.setUserRating(rating);
+            userSerieRepository.save(userSerie);
+
+            //recalcul note global du film au catalogue
+            serieService.updateSerieTotalRating(userSerie.getSerie(), rating);
+        }
     }
 }
