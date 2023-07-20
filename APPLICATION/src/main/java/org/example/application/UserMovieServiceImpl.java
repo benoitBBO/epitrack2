@@ -1,5 +1,6 @@
 package org.example.application;
 
+import org.example.domaine.exceptions.ResourceAlreadyExistsException;
 import org.example.domaine.exceptions.ResourceNotFoundException;
 import org.example.domaine.userselection.UserMovie;
 import org.example.infrastructure.repository.IUserMovieRepository;
@@ -18,6 +19,10 @@ public class UserMovieServiceImpl implements IUserMovieService {
     IMovieService movieService;
     @Override
     public void create(UserMovie userMovie) {
+        Optional<UserMovie> userMovieOptional = userMovieRepository.findByUserIdAndMovieId(userMovie.getUser().getId(), userMovie.getMovie().getId());
+        if (userMovieOptional.isPresent()){
+            throw new ResourceAlreadyExistsException();
+        }
         userMovieRepository.save(userMovie);
     }
 
@@ -69,6 +74,19 @@ public class UserMovieServiceImpl implements IUserMovieService {
 
             //recalcul note global du film au catalogue
             movieService.updateMovieTotalRating(userMovie.getMovie(), rating);
+        }
+    }
+
+    @Override
+    public void updateUserMovieStatus(Long userMovieId, String status) {
+        Optional<UserMovie> userMovieOptional = userMovieRepository.findById(userMovieId);
+        if (userMovieOptional.isEmpty()){
+            throw new ResourceNotFoundException();
+        }
+        else {
+            UserMovie userMovie = userMovieOptional.get();
+            userMovie.setStatus(status);
+            userMovieRepository.save(userMovie);
         }
     }
 }

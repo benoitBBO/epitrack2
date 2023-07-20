@@ -2,6 +2,7 @@ package org.example.exposition.usermovie.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.example.exposition.movie.dto.MovieDetailDto;
+import org.example.exposition.user.dto.UserDto;
 
 import java.time.LocalDate;
 
@@ -12,13 +13,15 @@ public class UserMovieDetailDto {
     private Integer userRating;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate statusDate;
+    private UserDto user;
 
-    public UserMovieDetailDto(Long id, MovieDetailDto movie, String status, Integer userRating, LocalDate statusDate) {
+    public UserMovieDetailDto(Long id, MovieDetailDto movie, String status, Integer userRating, LocalDate statusDate, UserDto user) {
         this.id = id;
         this.movie = movie;
         this.status = status;
         this.userRating = userRating;
         this.statusDate = statusDate;
+        this.user = user;
     }
 
     public UserMovieDetailDto() {
@@ -62,5 +65,13 @@ public class UserMovieDetailDto {
 
     public void setStatusDate(LocalDate statusDate) {
         this.statusDate = statusDate;
+    }
+
+    public UserDto getUser() {
+        return user;
+    }
+
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 }
