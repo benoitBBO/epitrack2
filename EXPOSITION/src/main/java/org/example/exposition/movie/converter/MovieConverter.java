@@ -40,7 +40,7 @@ public class MovieConverter {
         movie.setTitle(json.getTitle());
         movie.setOverview(json.getOverview());
         movie.setReleaseDate(json.getRelease_date());
-        movie.setTotalRating(json.getVote_average());
+        movie.setTotalRating(json.getVote_average()* json.getVote_count()/2);
         movie.setVoteCount(json.getVote_count());
         movie.setImagePosterUrl(json.getPoster_path());
         movie.setImageLandscapeUrl(json.getBackdrop_path());

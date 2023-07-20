@@ -39,7 +39,7 @@ public class SerieConverter {
         serie.setTitle(json.getName());
         serie.setOverview(json.getOverview());
         serie.setReleaseDate(json.getFirst_air_date());
-        serie.setTotalRating(json.getVote_average());
+        serie.setTotalRating(json.getVote_average()* json.getVote_count()/2);
         serie.setVoteCount(json.getVote_count());
         serie.setImagePosterUrl(json.getPoster_path());
         serie.setImageLandscapeUrl(json.getBackdrop_path());
