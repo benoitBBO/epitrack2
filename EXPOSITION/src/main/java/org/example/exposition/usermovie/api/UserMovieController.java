@@ -20,8 +20,9 @@ public class UserMovieController {
     @Autowired
     UserMovieConverter userMovieConverter;
     @PostMapping
-    public void createMovie(@RequestBody UserMovie userMovie) {
-        userMovieService.create(userMovie);
+    public ResponseEntity<String> createMovie(@RequestBody UserMovieDetailDto userMovieDetailDto) {
+        userMovieService.create(userMovieConverter.convertDetailDtoToEntity(userMovieDetailDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body("Votre film a bien été ajouté à votre catalogue");
     }
     @GetMapping("/{id}")
     public UserMovie findById(@PathVariable("id")Long id) {
@@ -49,7 +50,7 @@ public class UserMovieController {
         }
         return userMoviesDetailDto;
     }
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public List<UserMovieDetailDto> findAllByUserIdOrderByUserRatingDesc(@PathVariable("userId") Long userId) {
         List<UserMovie> userMoviesEntity = userMovieService.findAllByUserIdOrderByUserRatingDesc(userId);
         List<UserMovieDetailDto> userMoviesDetailDto = new ArrayList<>();
@@ -73,4 +74,11 @@ public class UserMovieController {
     //    userMovieService.updateUserMovieStatus(userId, movieId, status);
     //    return ResponseEntity.status(HttpStatus.OK).body("Le statut a bien été mis à jour");
     //}
+
+    @PutMapping("/status/{userMovieId}/{status}")
+    public ResponseEntity<String> updateUserMovieStatus(@PathVariable("userMovieId") Long userMovieId,
+                                                        @PathVariable("status") String status) {
+        userMovieService.updateUserMovieStatus(userMovieId, status);
+        return ResponseEntity.status(HttpStatus.OK).body("Suivi bien pris en compte");
+    }
 }

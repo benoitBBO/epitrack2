@@ -8,6 +8,7 @@ import org.example.exposition.movie.dto.MovieDetailDto;
 import org.example.exposition.tmdb.dto.CastDto;
 import org.example.exposition.tmdb.dto.GenreDto;
 import org.example.exposition.tmdb.dto.TmdbDto;
+import org.example.exposition.user.dto.UserDto;
 import org.example.exposition.usermovie.dto.UserMovieDetailDto;
 import org.example.exposition.usermovie.dto.UserMovieMinDto;
 import org.modelmapper.ModelMapper;
@@ -37,14 +38,18 @@ public class UserMovieConverter {
         movieDto.setTotalRating(entity.getMovie().getTotalRating());
         movieDto.setVoteCount(entity.getMovie().getVoteCount());
 
-        UserMovieDetailDto userDto = new UserMovieDetailDto();
-        userDto.setId(entity.getId());
-        userDto.setUserRating(entity.getUserRating());
-        userDto.setStatus(entity.getStatus());
-        userDto.setStatusDate(entity.getStatusDate());
-        userDto.setMovie(movieDto);
+        UserDto userDto = new UserDto();
+        userDto.setId(entity.getUser().getId());
 
-        return userDto;
+        UserMovieDetailDto userMovieDto = new UserMovieDetailDto();
+        userMovieDto.setId(entity.getId());
+        userMovieDto.setUserRating(entity.getUserRating());
+        userMovieDto.setStatus(entity.getStatus());
+        userMovieDto.setStatusDate(entity.getStatusDate());
+        userMovieDto.setMovie(movieDto);
+        userMovieDto.setUser(userDto);
+
+        return userMovieDto;
     }
     public UserMovie convertMinDtoToEntity(UserMovieMinDto dto){
         ModelMapper mapper=new ModelMapper();
