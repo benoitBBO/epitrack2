@@ -1,4 +1,4 @@
-package org.example.exposition.api;
+package org.example.exposition.userepisode.api;
 
 import org.example.application.IUserEpisodeService;
 import org.example.domaine.userselection.UserEpisode;

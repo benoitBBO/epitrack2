@@ -1,5 +1,6 @@
 package org.example.exposition.movie.converter;
 
+import org.example.application.util.ICalculService;
 import org.example.domaine.catalog.Actor;
 import org.example.domaine.catalog.Genre;
 import org.example.domaine.catalog.Movie;
@@ -7,6 +8,7 @@ import org.example.exposition.movie.dto.MovieDetailDto;
 import org.example.exposition.movie.dto.MovieMinDto;
 import org.example.exposition.tmdb.dto.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,13 +18,29 @@ import java.util.List;
 @Component
 public class MovieConverter {
 
+    @Autowired
+    ICalculService calculService;
+
+    /*     Si il y a un besoin, refaire le convert (attention au ratingAverage)
+           Dans ce sens, normalement c'est tmdbDTO vers Movie Entity
     public Movie convertDetailDtoToEntity(MovieDetailDto dto){
         ModelMapper mapper=new ModelMapper();
         return mapper.map(dto,Movie.class);
-    }
+    }*/
     public MovieDetailDto convertEntityToDetailDto(Movie entity){
-        ModelMapper mapper=new ModelMapper();
-        return mapper.map(entity,MovieDetailDto.class);
+        MovieDetailDto dto = new MovieDetailDto();
+        dto.setId(entity.getId());
+        dto.setTitle(entity.getTitle());
+        dto.setOverview(entity.getOverview());
+        dto.setReleaseDate(entity.getReleaseDate());
+        dto.setRatingAverage(calculService.computeAverage(entity.getTotalRating(), entity.getVoteCount()));
+        dto.setImagePosterUrl(entity.getImagePosterUrl());
+        dto.setImageLandscapeUrl(entity.getImageLandscapeUrl());
+        dto.setGenres(entity.getGenres());
+        dto.setActors(entity.getActors());
+        dto.setImdbRef(entity.getImdbRef());
+
+        return dto;
     }
     public Movie convertMinDtoToEntity(MovieMinDto dto){
         ModelMapper mapper=new ModelMapper();

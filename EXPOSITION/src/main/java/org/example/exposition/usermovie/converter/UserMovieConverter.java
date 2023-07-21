@@ -4,6 +4,7 @@ import org.example.domaine.catalog.Actor;
 import org.example.domaine.catalog.Genre;
 import org.example.domaine.catalog.Movie;
 import org.example.domaine.userselection.UserMovie;
+import org.example.exposition.movie.converter.MovieConverter;
 import org.example.exposition.movie.dto.MovieDetailDto;
 import org.example.exposition.tmdb.dto.CastDto;
 import org.example.exposition.tmdb.dto.GenreDto;
@@ -12,6 +13,7 @@ import org.example.exposition.user.dto.UserDto;
 import org.example.exposition.usermovie.dto.UserMovieDetailDto;
 import org.example.exposition.usermovie.dto.UserMovieMinDto;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,12 +21,15 @@ import java.util.List;
 @Component
 public class UserMovieConverter {
 
+    @Autowired
+    MovieConverter movieConverter;
+
     public UserMovie convertDetailDtoToEntity(UserMovieDetailDto dto){
         ModelMapper mapper=new ModelMapper();
         return mapper.map(dto, UserMovie.class);
     }
     public UserMovieDetailDto convertEntityToDetailDto(UserMovie entity){
-
+        /*
         MovieDetailDto movieDto = new MovieDetailDto();
         movieDto.setId(entity.getMovie().getId());
         movieDto.setActors(entity.getMovie().getActors());
@@ -37,6 +42,7 @@ public class UserMovieConverter {
         movieDto.setImdbRef(entity.getMovie().getImdbRef());
         movieDto.setTotalRating(entity.getMovie().getTotalRating());
         movieDto.setVoteCount(entity.getMovie().getVoteCount());
+        */
 
         UserDto userDto = new UserDto();
         userDto.setId(entity.getUser().getId());
@@ -46,7 +52,7 @@ public class UserMovieConverter {
         userMovieDto.setUserRating(entity.getUserRating());
         userMovieDto.setStatus(entity.getStatus());
         userMovieDto.setStatusDate(entity.getStatusDate());
-        userMovieDto.setMovie(movieDto);
+        userMovieDto.setMovie(movieConverter.convertEntityToDetailDto(entity.getMovie()));
         userMovieDto.setUser(userDto);
 
         return userMovieDto;

@@ -1,13 +1,15 @@
 package org.example.exposition.serie.converter;
 
+import org.example.application.util.ICalculService;
 import org.example.domaine.catalog.*;
-import org.example.exposition.episode.dto.EpisodeDetailDto;
-import org.example.exposition.episode.dto.EpisodeMinDto;
+import org.example.exposition.season.converter.SeasonConverter;
 import org.example.exposition.season.dto.SeasonDetailDto;
 import org.example.exposition.serie.dto.SerieDetailDto;
+import org.example.exposition.serie.dto.SerieDetailWithoutSeasonDto;
 import org.example.exposition.serie.dto.SerieMinDto;
 import org.example.exposition.tmdb.dto.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,13 +17,42 @@ import java.util.List;
 
 @Component
 public class SerieConverter {
+
+    @Autowired
+    SeasonConverter seasonConverter;
+    @Autowired
+    ICalculService calculService;
+
+    /*NON UTILISé
     public Serie convertDetailDtoToEntity(SerieDetailDto dto){
         ModelMapper mapper=new ModelMapper();
         return mapper.map(dto,Serie.class);
     }
+    */
+
+    public SerieDetailWithoutSeasonDto convertEntityToDetailWithoutSeasonDto(Serie entity){
+        SerieDetailWithoutSeasonDto dto = new SerieDetailWithoutSeasonDto();
+        dto.setId(entity.getId());
+        dto.setTitle(entity.getTitle());
+        dto.setOverview(entity.getOverview());
+        dto.setReleaseDate(entity.getReleaseDate());
+        dto.setRatingAverage(calculService.computeAverage(entity.getTotalRating(), entity.getVoteCount()));
+        dto.setImagePosterUrl(entity.getImagePosterUrl());
+        dto.setImageLandscapeUrl(entity.getImageLandscapeUrl());
+        dto.setImdbRef(entity.getImdbRef());
+        dto.setGenres(entity.getGenres());
+        dto.setActors(entity.getActors());
+        return dto;
+    }
     public SerieDetailDto convertEntityToDetailDto(Serie entity){
-        ModelMapper mapper=new ModelMapper();
-        return mapper.map(entity,SerieDetailDto.class);
+        SerieDetailDto dto = new SerieDetailDto();
+        dto.setSerie(convertEntityToDetailWithoutSeasonDto(entity));
+        List<SeasonDetailDto> seasonDetailDtoList = new ArrayList<>();
+        for (Season season: entity.getSeasons()) {
+            seasonDetailDtoList.add(seasonConverter.convertEntityToDetailDto(season));
+        }
+        dto.setSeasons(seasonDetailDtoList);
+        return dto;
     }
     public Serie convertMinDtoToEntity(SerieMinDto dto){
         ModelMapper mapper=new ModelMapper();

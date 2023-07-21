@@ -39,6 +39,15 @@ public class UserSerieServiceImpl implements IUserSerieService {
         userSerieRepository.deleteById(id);
     }
 
+
+    public List<UserSerie> findFirst4ByUserIdOrderByUserRatingDesc(Long userId){
+        Optional<List<UserSerie>> optional = userSerieRepository.findFirst4ByUserIdOrderByUserRatingDesc(userId);
+        if (optional.isPresent()){
+            return optional.get();
+        } else {
+            return null;
+        }
+    }
     @Override
     public void updateUserRating(Long userId, Long videoId, Integer rating) {
         Optional<UserSerie> userSerieOptional = userSerieRepository.findByUserIdAndSerieId(userId, videoId);
@@ -53,6 +62,16 @@ public class UserSerieServiceImpl implements IUserSerieService {
 
             //recalcul note global du film au catalogue
             serieService.updateSerieTotalRating(userSerie.getSerie(), rating);
+        }
+    }
+
+    @Override
+    public List<UserSerie> findAllByUserIdOrderByUserRatingDesc(Long userId) {
+        Optional<List<UserSerie>> optional = userSerieRepository.findAllByUserIdOrderByUserRatingDesc(userId);
+        if (optional.isPresent()){
+            return optional.get();
+        } else {
+            return null;
         }
     }
 }

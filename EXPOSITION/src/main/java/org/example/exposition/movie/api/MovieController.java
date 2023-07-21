@@ -40,10 +40,12 @@ public class MovieController {
         }
         return moviesDetailDto;
     }
+    /* Si besoin de mettre à jour un movie, ne pas mettre à jour tous les champs depuis le front
+        Attention à rating average qui est calculé . Faire un find puis update champs aux cas par cas
     @PutMapping
     public MovieDetailDto update(@RequestBody MovieDetailDto detailDto){
         return movieConverter.convertEntityToDetailDto(movieService.update(movieConverter.convertDetailDtoToEntity(detailDto)));
-    }
+    }*/
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id){
         movieService.delete(id);
