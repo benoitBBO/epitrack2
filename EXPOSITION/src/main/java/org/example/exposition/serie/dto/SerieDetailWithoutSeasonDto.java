@@ -1,4 +1,4 @@
-package org.example.exposition.movie.dto;
+package org.example.exposition.serie.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.example.domaine.catalog.Actor;
@@ -7,8 +7,7 @@ import org.example.domaine.catalog.Genre;
 import java.time.LocalDate;
 import java.util.List;
 
-public class MovieDetailDto {
-
+public class SerieDetailWithoutSeasonDto {
     private Long id;
     private String title;
     private String overview;
@@ -21,7 +20,10 @@ public class MovieDetailDto {
     private List<Actor> actors;
     private String imdbRef;
 
-    public MovieDetailDto(Long id, String title, String overview, LocalDate releaseDate, Integer ratingAverage, String imagePosterUrl, String imageLandscapeUrl, List<Genre> genres, List<Actor> actors, String imdbRef) {
+    public SerieDetailWithoutSeasonDto() {
+    }
+
+    public SerieDetailWithoutSeasonDto(Long id, String title, String overview, LocalDate releaseDate, Integer ratingAverage, String imagePosterUrl, String imageLandscapeUrl, List<Genre> genres, List<Actor> actors, String imdbRef) {
         this.id = id;
         this.title = title;
         this.overview = overview;
@@ -32,9 +34,6 @@ public class MovieDetailDto {
         this.genres = genres;
         this.actors = actors;
         this.imdbRef = imdbRef;
-    }
-
-    public MovieDetailDto() {
     }
 
     public Long getId() {

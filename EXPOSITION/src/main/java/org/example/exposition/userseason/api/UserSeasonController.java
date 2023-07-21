@@ -1,4 +1,4 @@
-package org.example.exposition.api;
+package org.example.exposition.userseason.api;
 
 import org.example.application.IUserSeasonService;
 import org.example.domaine.userselection.UserSeason;
