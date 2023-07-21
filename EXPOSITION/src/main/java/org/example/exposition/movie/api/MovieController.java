@@ -26,6 +26,13 @@ public class MovieController {
     public void createMovie(@RequestBody TmdbDto detailDto) {
         movieService.create(movieConverter.convertTmdbDtoToEntity(detailDto));
     }
+
+    @PostMapping("/mass")
+    public void createMovies(@RequestBody List<TmdbDto> dtoList) {
+        dtoList.forEach(dto -> {
+            movieService.create(movieConverter.convertTmdbDtoToEntity(dto));
+        });
+    }
     @GetMapping("/{id}")
     public MovieDetailDto findById(@PathVariable("id")Long id) {
         return movieConverter.convertEntityToDetailDto(movieService.findById(id));
