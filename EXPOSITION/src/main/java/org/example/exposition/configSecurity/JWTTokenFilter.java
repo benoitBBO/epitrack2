@@ -21,7 +21,7 @@ import java.util.List;
 
 public class JWTTokenFilter extends OncePerRequestFilter {
 
-    private String secret = "&GMxGrrHl1&RtKevTeFBETd!GqL1*GLo"; // voir pour cacher le secret dans application.properties
+    private String secret = "&GMxGrrHl1&RtKevTeFBETd!GqL1*GLo"; //TODO voir pour cacher le secret dans application.properties
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,

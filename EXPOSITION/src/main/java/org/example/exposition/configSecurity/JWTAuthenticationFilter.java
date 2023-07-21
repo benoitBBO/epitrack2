@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private String secret = "&GMxGrrHl1&RtKevTeFBETd!GqL1*GLo"; // voir pour cacher le secret dans application.properties
+    private String secret = "&GMxGrrHl1&RtKevTeFBETd!GqL1*GLo"; // TODO voir pour cacher le secret dans application.properties
     private AuthenticationManager authenticationManager;
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager){
         this.authenticationManager = authenticationManager;

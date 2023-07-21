@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -76,7 +79,6 @@ public class UserMovieServiceImpl implements IUserMovieService {
             movieService.updateMovieTotalRating(userMovie.getMovie(), rating);
         }
     }
-
     @Override
     public void updateUserMovieStatus(Long userMovieId, String status) {
         Optional<UserMovie> userMovieOptional = userMovieRepository.findById(userMovieId);
@@ -86,6 +88,7 @@ public class UserMovieServiceImpl implements IUserMovieService {
         else {
             UserMovie userMovie = userMovieOptional.get();
             userMovie.setStatus(status);
+            userMovie.setStatusDate(LocalDate.now());
             userMovieRepository.save(userMovie);
         }
     }
