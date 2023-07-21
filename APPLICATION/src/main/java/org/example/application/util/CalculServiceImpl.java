@@ -6,7 +6,10 @@ import org.springframework.stereotype.Service;
 public class CalculServiceImpl implements ICalculService {
     @Override
     public Integer computeAverage(Integer total, Integer count) {
-        Integer average = total/count;
+        Integer average = 0;
+        if (count>0){
+            average = total/count;
+        }
         return average;
     }
 }

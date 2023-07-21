@@ -46,7 +46,16 @@ public class SerieConverter {
     }
     public SerieDetailDto convertEntityToDetailDto(Serie entity){
         SerieDetailDto dto = new SerieDetailDto();
-        dto.setSerie(convertEntityToDetailWithoutSeasonDto(entity));
+        dto.setId(entity.getId());
+        dto.setTitle(entity.getTitle());
+        dto.setOverview(entity.getOverview());
+        dto.setReleaseDate(entity.getReleaseDate());
+        dto.setRatingAverage(calculService.computeAverage(entity.getTotalRating(), entity.getVoteCount()));
+        dto.setImagePosterUrl(entity.getImagePosterUrl());
+        dto.setImageLandscapeUrl(entity.getImageLandscapeUrl());
+        dto.setImdbRef(entity.getImdbRef());
+        dto.setGenres(entity.getGenres());
+        dto.setActors(entity.getActors());
         List<SeasonDetailDto> seasonDetailDtoList = new ArrayList<>();
         for (Season season: entity.getSeasons()) {
             seasonDetailDtoList.add(seasonConverter.convertEntityToDetailDto(season));

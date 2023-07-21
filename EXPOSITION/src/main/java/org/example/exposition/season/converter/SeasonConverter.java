@@ -15,20 +15,13 @@ import java.util.List;
 
 @Component
 public class SeasonConverter {
-    @Autowired
-    EpisodeConverter episodeConverter;
 
     public SeasonDetailWithoutEpisodeDto convertEntityToDetailWithoutEpisodeDto(Season entity){
         ModelMapper mapper=new ModelMapper();
         return mapper.map(entity,SeasonDetailWithoutEpisodeDto.class);
     }
     public SeasonDetailDto convertEntityToDetailDto(Season entity){
-        SeasonDetailDto dto = new SeasonDetailDto();
-        dto.setSeason(convertEntityToDetailWithoutEpisodeDto(entity));
-        List<EpisodeDetailDto> episodeDetailDtoList = new ArrayList<>();
-        for (Episode episode : entity.getEpisodes()) {
-            episodeDetailDtoList.add(episodeConverter.convertEntityToDetailDto(episode));
-        }
-        return dto;
+        ModelMapper mapper=new ModelMapper();
+        return mapper.map(entity,SeasonDetailDto.class);
     }
 }
