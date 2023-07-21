@@ -32,6 +32,13 @@ public class SerieController {
         service.create(serieConverter.convertTmdbDtoToEntity(json));
     }
 
+    @PostMapping("/mass")
+    public void createMovies(@RequestBody List<TmdbDto> dtoList) {
+        dtoList.forEach(dto -> {
+            service.create(serieConverter.convertTmdbDtoToEntity(dto));
+        });
+    }
+
     @GetMapping("/{id}")
     public SerieDetailDto findyById(@PathVariable("id") Long id){
         return serieConverter.convertEntityToDetailDto(service.findById(id));
