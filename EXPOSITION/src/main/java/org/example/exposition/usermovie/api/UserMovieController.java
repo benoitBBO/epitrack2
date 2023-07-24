@@ -62,6 +62,7 @@ public class UserMovieController {
         }
         return userMoviesDetailDto;
     }
+  
 //    @PutMapping("/vote/{userId}/{movieId}/{vote}")
 //    public ResponseEntity<String> updateUserMovieRating(@PathVariable("userId") Long userId,
 //                                                        @PathVariable("movieId") Long movieId,

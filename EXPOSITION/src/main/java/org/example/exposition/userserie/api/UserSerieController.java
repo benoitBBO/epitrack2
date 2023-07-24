@@ -25,14 +25,16 @@ public class UserSerieController {
     public void create(@RequestBody UserSerie userSerie) {
         userSerieService.create(userSerie);
     }
-    @GetMapping("/{id}")
-    public UserSerie findById(@PathVariable("id")Long id) {
-        return userSerieService.findById(id);
-    }
-    @PutMapping
-    public UserSerie update(@RequestBody UserSerie userSerie){
-        return userSerieService.update(userSerie);
-    }
+
+    //@GetMapping("/{id}")
+    //public UserSerie findById(@PathVariable("id")Long id) {
+    //    return userSerieService.findById(id);
+    //}
+
+    //@PutMapping
+    //public UserSerie update(@RequestBody UserSerie userSerie){
+    //    return userSerieService.update(userSerie);
+    //}
 
     @GetMapping("/best4/{userId}")
     public List<UserSerieDetailDto> findFirst4ByUserIdOrderByUserRatingDesc(@PathVariable("userId") Long userId){
@@ -66,13 +68,15 @@ public class UserSerieController {
         userSerieService.updateUserRating(userId, serieId, rating);
         return ResponseEntity.status(HttpStatus.OK).body("Vote bien pris en compte");
     }
-    //@PutMapping("/status/{userId}/{movieId}/{status}")
-    //public ResponseEntity<String> updateUserMovieStatus (@PathVariable("userId") Long userId,
-    //                                                @PathVariable("movieId") Long movieId,
-    //                                                @PathVariable("status") Integer status){
-    //    userMovieService.updateUserMovieStatus(userId, movieId, status);
-    //    return ResponseEntity.status(HttpStatus.OK).body("Le statut a bien été mis à jour");
-    //}
+
+    @PutMapping("/status/{userSerieId}/{status}")
+    public ResponseEntity<String> updateUserSerieStatus (@PathVariable("userSerieId") Long userSerieId,
+                                                         @PathVariable("status") String status){
+        userSerieService.updateUserSerieStatus(userSerieId, status);
+        return ResponseEntity.status(HttpStatus.OK).body("Le statut a bien été mis à jour");
+        //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le statut n'a pas été mis à jour");
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id")Long id){
         userSerieService.delete(id);
