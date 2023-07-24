@@ -16,7 +16,7 @@ public class SerieDetailDto {
     private String overview;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate releaseDate;
-    private Integer ratingAverage;
+    private Integer totalRating;
     private String imagePosterUrl;
     private String imageLandscapeUrl;
     private List<Genre> genres;
@@ -24,12 +24,12 @@ public class SerieDetailDto {
     private String imdbRef;
     private List<SeasonDetailDto> seasons;
 
-    public SerieDetailDto(Long id, String title, String overview, LocalDate releaseDate, Integer ratingAverage, String imagePosterUrl, String imageLandscapeUrl, List<Genre> genres, List<Actor> actors, String imdbRef, List<SeasonDetailDto> seasons) {
+    public SerieDetailDto(Long id, String title, String overview, LocalDate releaseDate, Integer totalRating, String imagePosterUrl, String imageLandscapeUrl, List<Genre> genres, List<Actor> actors, String imdbRef, List<SeasonDetailDto> seasons) {
         this.id = id;
         this.title = title;
         this.overview = overview;
         this.releaseDate = releaseDate;
-        this.ratingAverage = ratingAverage;
+        this.totalRating = totalRating;
         this.imagePosterUrl = imagePosterUrl;
         this.imageLandscapeUrl = imageLandscapeUrl;
         this.genres = genres;
@@ -73,12 +73,12 @@ public class SerieDetailDto {
         this.releaseDate = releaseDate;
     }
 
-    public Integer getRatingAverage() {
-        return ratingAverage;
+    public Integer gettotalRating() {
+        return totalRating;
     }
 
-    public void setRatingAverage(Integer ratingAverage) {
-        this.ratingAverage = ratingAverage;
+    public void settotalRating(Integer totalRating) {
+        this.totalRating = totalRating;
     }
 
     public String getImagePosterUrl() {

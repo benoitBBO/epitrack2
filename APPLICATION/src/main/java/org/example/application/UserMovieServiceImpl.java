@@ -1,8 +1,11 @@
 package org.example.application;
 
+import org.example.application.util.CalculServiceImpl;
 import org.example.domaine.exceptions.ResourceAlreadyExistsException;
 import org.example.domaine.exceptions.ResourceNotFoundException;
 import org.example.domaine.userselection.UserMovie;
+import org.example.domaine.userselection.UserRating;
+import org.example.infrastructure.repository.IMovieRepository;
 import org.example.infrastructure.repository.IUserMovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +21,14 @@ import java.util.Optional;
 public class UserMovieServiceImpl implements IUserMovieService {
     @Autowired
     IUserMovieRepository userMovieRepository;
+
+    @Autowired
+    IMovieRepository movieRepository;
     @Autowired
     IMovieService movieService;
+
+    @Autowired
+    CalculServiceImpl calculService;
     @Override
     public void create(UserMovie userMovie) {
         Optional<UserMovie> userMovieOptional = userMovieRepository.findByUserIdAndMovieId(userMovie.getUser().getId(), userMovie.getMovie().getId());
@@ -63,21 +72,42 @@ public class UserMovieServiceImpl implements IUserMovieService {
     public List<UserMovie> findAllByUserIdOrderByUserRatingDesc(Long userId) {
         return userMovieRepository.findAllByUserIdOrderByUserRatingDesc(userId);
     }
+//    @Override
+//    public void updateUserRating(Long userId, Long videoId, Integer rating) {
+//        Optional<UserMovie> userMovieOptional = userMovieRepository.findByUserIdAndMovieId(userId, videoId);
+//        if (userMovieOptional.isEmpty()){
+//            throw new ResourceNotFoundException();
+//        }
+//        else {
+//            //mise à jour de la note utilisateur (rating)
+//            UserMovie userMovie = userMovieOptional.get();
+//            userMovie.setUserRating(rating);
+//            userMovieRepository.save(userMovie);
+//
+//            //recalcul note global du film au catalogue
+//            movieService.updateMovieTotalRatingAndVoteCount(userMovie.getMovie(), rating);
+//        }
+//    }
+
     @Override
-    public void updateUserRating(Long userId, Long videoId, Integer rating) {
-        Optional<UserMovie> userMovieOptional = userMovieRepository.findByUserIdAndMovieId(userId, videoId);
+    public void updateUserRating(UserRating userRating) {
+        //Update UserMovieRating
+        Optional<UserMovie> userMovieOptional = userMovieRepository.findByUserIdAndMovieId(userRating.getUserId(), userRating.getMovieId());
         if (userMovieOptional.isEmpty()){
             throw new ResourceNotFoundException();
         }
         else {
             //mise à jour de la note utilisateur (rating)
-            UserMovie userMovie = userMovieOptional.get();
-            userMovie.setUserRating(rating);
-            userMovieRepository.save(userMovie);
+            userMovieRepository.updateUserMovieRating(userRating.getUserMovieId(), userRating.getNewRating());
 
-            //recalcul note global du film au catalogue
-            movieService.updateMovieTotalRating(userMovie.getMovie(), rating);
+            //Update TotalRating et VoteCount
+            UserMovie userMovie = userMovieOptional.get();
+            movieService.updateMovieTotalRatingAndVoteCount(userMovie.getMovie(), userRating);
         }
+
+
+
+
     }
     @Override
     public void updateUserMovieStatus(Long userMovieId, String status) {

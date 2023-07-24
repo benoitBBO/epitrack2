@@ -1,6 +1,7 @@
 package org.example.application;
 
 import org.example.domaine.catalog.Movie;
+import org.example.domaine.userselection.UserRating;
 
 import java.util.List;
 
@@ -13,5 +14,5 @@ public interface IMovieService {
     List<Movie> findFirst4ByOrderByTotalRatingDesc();
     List<Movie> findByTitleContains(String title);
 
-    void updateMovieTotalRating(Movie movie, Integer userRating);
+    void updateMovieTotalRatingAndVoteCount(Movie movie, UserRating userRating);
 }

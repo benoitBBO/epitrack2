@@ -1,6 +1,8 @@
 package org.example.application;
 
+import org.example.application.util.ICalculService;
 import org.example.domaine.catalog.Movie;
+import org.example.domaine.userselection.UserRating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,9 @@ import java.util.Optional;
 public class MovieServiceImpl implements IMovieService {
     @Autowired
     IMovieRepository movieRepository;
+
+    @Autowired
+    ICalculService calculService;
     @Override
     @Transactional
     public void create(Movie movie) {
@@ -49,9 +54,13 @@ public class MovieServiceImpl implements IMovieService {
     }
 
     @Override
-    public void updateMovieTotalRating(Movie movie, Integer userRating) {
-        movie.setTotalRating(movie.getTotalRating()+userRating);
-        movie.setVoteCount(movie.getVoteCount()+1);
-        movieRepository.save(movie);
+    public void updateMovieTotalRatingAndVoteCount(Movie movie, UserRating userRating) {
+//        movie.setTotalRating(movie.getTotalRating()+userRating);
+//        movie.setVoteCount(movie.getVoteCount()+1);
+//        movieRepository.save(movie);
+
+        movieRepository.updateMovieRating(movie.getId(), calculService.computeAverage(movie.getTotalRating(), movie.getVoteCount(), userRating.getNewRating(), userRating.getPreviousRating()));
+        movieRepository.updateMovieVotes(movie.getId(), userRating.getPreviousRating() == null ? movie.getVoteCount() + 1 : movie.getVoteCount()); //Si nouvelle notation, le nombre total de votes est incrémenté de 1, sinon il reste le même
+
     }
 }

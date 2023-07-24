@@ -2,5 +2,5 @@ package org.example.application.util;
 
 public interface ICalculService {
 
-    Integer computeAverage (Integer total, Integer count);
+    Integer computeAverage (Integer totalRating, Integer voteCount, Integer newVote, Integer previousVote);
 }
