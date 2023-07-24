@@ -12,7 +12,7 @@ public interface IUserSerieService {
     void delete(Long id);
     List<UserSerie> findFirst4ByUserIdOrderByUserRatingDesc(Long userId);
     void updateUserRating(Long userId, Long videoId, Integer rating);
-
     List<UserSerie> findAllByUserIdOrderByUserRatingDesc(Long userId);
+    void updateUserSerieStatus(Long userSerieId, String status);
 
 }

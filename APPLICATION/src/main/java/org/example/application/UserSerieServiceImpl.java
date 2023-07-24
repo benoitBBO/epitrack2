@@ -6,8 +6,10 @@ import org.example.domaine.userselection.UserSerie;
 import org.example.infrastructure.repository.IUserSerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +74,30 @@ public class UserSerieServiceImpl implements IUserSerieService {
             return optional.get();
         } else {
             return null;
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateUserSerieStatus(Long userSerieId, String status) {
+        System.out.println("upddateUserSerieStatus: userSerieId="+userSerieId);
+        Optional<UserSerie> userSerieOptional = userSerieRepository.findById(userSerieId);
+        // vérif que le find By Id est en eager sur seasons / episodes. Sinon le forcer avec un join fetch
+        if (userSerieOptional.isEmpty()){
+            throw new ResourceNotFoundException();
+        }
+        else {
+            UserSerie userSerie = userSerieOptional.get();
+            userSerie.setStatus(status);
+            userSerie.setStatusDate(LocalDate.now());
+            userSerieRepository.save(userSerie);
+
+            // Pour chaque UserSeasons
+            //        find by id
+            //        màj du status si existe et status <> nv status
+            //        Pour chaque UserEpisodes
+            //            find by id
+            //            màj du status si existe et status <> nv status
         }
     }
 }
