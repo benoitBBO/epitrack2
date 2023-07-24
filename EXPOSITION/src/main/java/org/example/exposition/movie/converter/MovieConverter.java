@@ -21,7 +21,7 @@ public class MovieConverter {
     @Autowired
     ICalculService calculService;
 
-    /*     Si il y a un besoin, refaire le convert (attention au ratingAverage)
+    /*     Si il y a un besoin, refaire le convert (attention au totalRating)
            Dans ce sens, normalement c'est tmdbDTO vers Movie Entity
     public Movie convertDetailDtoToEntity(MovieDetailDto dto){
         ModelMapper mapper=new ModelMapper();
@@ -33,7 +33,7 @@ public class MovieConverter {
         dto.setTitle(entity.getTitle());
         dto.setOverview(entity.getOverview());
         dto.setReleaseDate(entity.getReleaseDate());
-        dto.setRatingAverage(calculService.computeAverage(entity.getTotalRating(), entity.getVoteCount()));
+        dto.settotalRating(entity.getTotalRating());
         dto.setImagePosterUrl(entity.getImagePosterUrl());
         dto.setImageLandscapeUrl(entity.getImageLandscapeUrl());
         dto.setGenres(entity.getGenres());
@@ -58,7 +58,7 @@ public class MovieConverter {
         movie.setTitle(json.getTitle());
         movie.setOverview(json.getOverview());
         movie.setReleaseDate(json.getRelease_date());
-        movie.setTotalRating(json.getVote_average()* json.getVote_count()/2);
+        movie.setTotalRating(json.getVote_average()/2);
         movie.setVoteCount(json.getVote_count());
         movie.setImagePosterUrl(json.getPoster_path());
         movie.setImageLandscapeUrl(json.getBackdrop_path());

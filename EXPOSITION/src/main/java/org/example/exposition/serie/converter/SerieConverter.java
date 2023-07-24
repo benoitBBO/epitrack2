@@ -36,7 +36,7 @@ public class SerieConverter {
         dto.setTitle(entity.getTitle());
         dto.setOverview(entity.getOverview());
         dto.setReleaseDate(entity.getReleaseDate());
-        dto.setRatingAverage(calculService.computeAverage(entity.getTotalRating(), entity.getVoteCount()));
+        dto.settotalRating(entity.getTotalRating());
         dto.setImagePosterUrl(entity.getImagePosterUrl());
         dto.setImageLandscapeUrl(entity.getImageLandscapeUrl());
         dto.setImdbRef(entity.getImdbRef());
@@ -50,7 +50,7 @@ public class SerieConverter {
         dto.setTitle(entity.getTitle());
         dto.setOverview(entity.getOverview());
         dto.setReleaseDate(entity.getReleaseDate());
-        dto.setRatingAverage(calculService.computeAverage(entity.getTotalRating(), entity.getVoteCount()));
+        dto.settotalRating(entity.getTotalRating());
         dto.setImagePosterUrl(entity.getImagePosterUrl());
         dto.setImageLandscapeUrl(entity.getImageLandscapeUrl());
         dto.setImdbRef(entity.getImdbRef());
@@ -79,7 +79,7 @@ public class SerieConverter {
         serie.setTitle(json.getName());
         serie.setOverview(json.getOverview());
         serie.setReleaseDate(json.getFirst_air_date());
-        serie.setTotalRating(json.getVote_average()* json.getVote_count()/2);
+        serie.setTotalRating(json.getVote_average()/2);
         serie.setVoteCount(json.getVote_count());
         serie.setImagePosterUrl(json.getPoster_path());
         serie.setImageLandscapeUrl(json.getBackdrop_path());
