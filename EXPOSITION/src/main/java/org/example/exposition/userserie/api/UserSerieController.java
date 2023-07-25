@@ -21,7 +21,7 @@ public class UserSerieController {
     IUserSerieService userSerieService;
     @Autowired
     UserSerieConverter userSerieConverter;
-    @PostMapping
+    @PostMapping //TODO mettre un DTO + converter
     public void create(@RequestBody UserSerie userSerie) {
         userSerieService.create(userSerie);
     }
