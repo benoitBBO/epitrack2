@@ -1,6 +1,8 @@
 package org.example.application;
 
+import org.example.domaine.exceptions.ResourceAlreadyExistsException;
 import org.example.domaine.exceptions.ResourceNotFoundException;
+import org.example.domaine.user.UserProfile;
 import org.example.domaine.userselection.UserMovie;
 import org.example.domaine.userselection.UserSerie;
 import org.example.infrastructure.repository.IUserSerieRepository;
@@ -22,6 +24,10 @@ public class UserSerieServiceImpl implements IUserSerieService {
 
     @Override
     public void create(UserSerie userSerie) {
+        Optional<UserSerie> optionalUserSerie = userSerieRepository.findByUserIdAndSerieId(userSerie.getUser().getId(), userSerie.getSerie().getId());
+        if (optionalUserSerie.isPresent()){
+            throw new ResourceAlreadyExistsException();
+        }
         userSerieRepository.save(userSerie);
     }
     @Override
