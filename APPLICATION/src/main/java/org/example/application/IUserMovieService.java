@@ -13,7 +13,6 @@ public interface IUserMovieService {
     void delete(Long id);
     List<UserMovie> findFirst4ByUserIdOrderByUserRatingDesc(Long userId);
     List<UserMovie> findAllByUserIdOrderByUserRatingDesc(Long userId);
-//    void updateUserRating(Long userId, Long videoId, Integer rating);
     void updateUserRating(UserRating userRating);
     void updateUserMovieStatus(Long userMovieId, String status);
 

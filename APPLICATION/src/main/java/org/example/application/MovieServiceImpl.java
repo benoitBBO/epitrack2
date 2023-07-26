@@ -55,12 +55,7 @@ public class MovieServiceImpl implements IMovieService {
 
     @Override
     public void updateMovieTotalRatingAndVoteCount(Movie movie, UserRating userRating) {
-//        movie.setTotalRating(movie.getTotalRating()+userRating);
-//        movie.setVoteCount(movie.getVoteCount()+1);
-//        movieRepository.save(movie);
-
         movieRepository.updateMovieRating(movie.getId(), calculService.computeAverage(movie.getTotalRating(), movie.getVoteCount(), userRating.getNewRating(), userRating.getPreviousRating()));
         movieRepository.updateMovieVotes(movie.getId(), userRating.getPreviousRating() == null ? movie.getVoteCount() + 1 : movie.getVoteCount()); //Si nouvelle notation, le nombre total de votes est incrémenté de 1, sinon il reste le même
-
     }
 }

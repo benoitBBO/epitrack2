@@ -2,6 +2,7 @@ package org.example.exposition.userserie.api;
 
 import org.example.application.IUserSerieService;
 import org.example.domaine.userselection.UserMovie;
+import org.example.domaine.userselection.UserRating;
 import org.example.domaine.userselection.UserSerie;
 import org.example.exposition.usermovie.dto.UserMovieDetailDto;
 import org.example.exposition.userserie.converter.UserSerieConverter;
@@ -11,8 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/userserie")
@@ -26,10 +29,10 @@ public class UserSerieController {
         userSerieService.create(userSerie);
     }
 
-    //@GetMapping("/{id}")
-    //public UserSerie findById(@PathVariable("id")Long id) {
-    //    return userSerieService.findById(id);
-    //}
+    @GetMapping("/{id}")
+    public UserSerieDetailDto findById(@PathVariable("id")Long id) {
+        return userSerieConverter.convertEntityToDetailDto(userSerieService.findById(id));
+    }
 
     //@PutMapping
     //public UserSerie update(@RequestBody UserSerie userSerie){
@@ -61,13 +64,13 @@ public class UserSerieController {
         return userSerieDetailDtoList;
     }
 
-    @PutMapping("/vote/{userId}/{serieId}/{vote}")
-    public ResponseEntity<String> updateUserMovieRating(@PathVariable("userId") Long userId,
-                                                        @PathVariable("serieId") Long serieId,
-                                                        @PathVariable("vote") Integer rating){
-        userSerieService.updateUserRating(userId, serieId, rating);
-        return ResponseEntity.status(HttpStatus.OK).body("Vote bien pris en compte");
-    }
+//    @PutMapping("/vote/{userId}/{serieId}/{vote}")
+//    public ResponseEntity<String> updateUserMovieRating(@PathVariable("userId") Long userId,
+//                                                        @PathVariable("serieId") Long serieId,
+//                                                        @PathVariable("vote") Integer rating){
+//        userSerieService.updateUserRating(userId, serieId, rating);
+//        return ResponseEntity.status(HttpStatus.OK).body("Vote bien pris en compte");
+//    }
 
     @PutMapping("/status/{userSerieId}/{status}")
     public ResponseEntity<String> updateUserSerieStatus (@PathVariable("userSerieId") Long userSerieId,
@@ -75,6 +78,14 @@ public class UserSerieController {
         userSerieService.updateUserSerieStatus(userSerieId, status);
         return ResponseEntity.status(HttpStatus.OK).body("Le statut a bien été mis à jour");
         //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le statut n'a pas été mis à jour");
+    }
+
+    @Transactional
+    @PutMapping("/rating")
+    public ResponseEntity<String> userSerieRating(@RequestBody UserRating userRating) {
+        userSerieService.updateUserRating(userRating);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Vote bien pris en compte");
     }
 
     @DeleteMapping("/{id}")
