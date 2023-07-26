@@ -3,7 +3,9 @@ package org.example.application;
 import org.example.domaine.exceptions.ResourceAlreadyExistsException;
 import org.example.domaine.exceptions.ResourceNotFoundException;
 import org.example.domaine.user.UserProfile;
+import org.example.domaine.userselection.UserEpisode;
 import org.example.domaine.userselection.UserMovie;
+import org.example.domaine.userselection.UserSeason;
 import org.example.domaine.userselection.UserSerie;
 import org.example.infrastructure.repository.IUserSerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,10 @@ public class UserSerieServiceImpl implements IUserSerieService {
     IUserSerieRepository userSerieRepository;
     @Autowired
     ISerieService serieService;
+    @Autowired
+    IUserSeasonService userSeasonService;
+    @Autowired
+    IUserEpisodeService userEpisodeService;
 
     @Override
     public void create(UserSerie userSerie) {
@@ -85,25 +91,147 @@ public class UserSerieServiceImpl implements IUserSerieService {
 
     @Override
     @Transactional
-    public void updateUserSerieStatus(Long userSerieId, String status) {
-        System.out.println("upddateUserSerieStatus: userSerieId="+userSerieId);
-        Optional<UserSerie> userSerieOptional = userSerieRepository.findById(userSerieId);
-        // vérif que le find By Id est en eager sur seasons / episodes. Sinon le forcer avec un join fetch
-        if (userSerieOptional.isEmpty()){
-            throw new ResourceNotFoundException();
-        }
-        else {
-            UserSerie userSerie = userSerieOptional.get();
-            userSerie.setStatus(status);
-            userSerie.setStatusDate(LocalDate.now());
-            userSerieRepository.save(userSerie);
+    public void updateStatusUserSerieAndSeasonsAndEpisodes(Long userSerieId, String status) {
 
-            // Pour chaque UserSeasons
-            //        find by id
-            //        màj du status si existe et status <> nv status
-            //        Pour chaque UserEpisodes
-            //            find by id
-            //            màj du status si existe et status <> nv status
+        UserSerie userSerie = findById(userSerieId);
+        // si non trouvé, l'exception est déjà levée dans la méthode findById
+
+        //mise à jour de la serie avec le bon statut
+        userSerie.setStatus(status);
+        userSerie.setStatusDate(LocalDate.now());
+        update(userSerie);
+
+        for (UserSeason userSeason : userSerie.getUserSeasons()) {
+            //Pour chaque season : si status <> attendu , mettre à jour la userseason avec le bon status
+            System.out.println("userSeason= "+ userSeason);
+
+                if (userSeason.getStatus() != status) {
+                   userSeason.setStatus(status);
+                   userSeason.setStatusDate(LocalDate.now());
+                   userSeasonService.updateUserSeason(userSeason);
+               }
+
+            for (UserEpisode userEpisode : userSeason.getUserEpisodes()) {
+                //Pour chaque épisode : si status <> attendu , mettre à jour le userepisode avec le bon status
+                if (userEpisode.getStatus() != status) {
+                   userEpisode.setStatus(status);
+                   userEpisode.setStatusDate(LocalDate.now());
+                   userEpisodeService.update(userEpisode);
+                }
+            }
         }
     }
+
+    @Override
+    @Transactional
+    public void updateStatusUserSeasonAndEpisodesAndVerifyStatusUserSerie(Long userSerieId, Long userSeasonId, String status) {
+        String newStatusForSerie = status;
+        Boolean userSeasonIdFound = false;
+
+        UserSerie userSerie = findById(userSerieId);
+
+        if (userSerie.getUserSeasons().size() > 0) {
+
+            for (UserSeason userSeason : userSerie.getUserSeasons()) {
+                if (userSeason.getId().equals(userSeasonId)) {
+                    //pour la user-saison concernée, mettre à jour le statut
+                    userSeason.setStatus(status);
+                    userSeason.setStatusDate(LocalDate.now());
+                    userSeasonService.updateUserSeason(userSeason);
+                    //boolean user-Season ok
+                    userSeasonIdFound = true;
+
+                    //Pour chaque épisode : si status <> attendu , mettre à jour le user-episode avec le bon status
+                    for (UserEpisode userEpisode : userSeason.getUserEpisodes()) {
+                        if (userEpisode.getStatus() != status) {
+                            userEpisode.setStatus(status);
+                            userEpisode.setStatusDate(LocalDate.now());
+                            userEpisodeService.update(userEpisode);
+                        }
+                    }
+                } else {
+                    //pour les autres saisons, on balaye leur statut pour vérifier si la user-série doit être mis à ONGOING (en cours)
+                    if (!userSeason.getStatus().equals(status)) {
+                        newStatusForSerie = "ONGOING";
+                    }
+                }
+            }
+        }
+
+        if (userSeasonIdFound) {
+            //mettre à jour le statut de user-serie si besoin
+            if (!userSerie.getStatus().equals(newStatusForSerie)) {
+                userSerie.setStatus(newStatusForSerie);
+                userSerie.setStatusDate(LocalDate.now());
+                update(userSerie);
+            }
+        } else {
+            throw new ResourceNotFoundException("La user-season est introuvable");
+        }
+
+    }
+
+    @Override
+    public void updateStatusUserEpisodeAndVerifyStatusUserSeasonAndSerie(Long userSerieId, Long userSeasonId, Long userEpisodeId, String status) {
+        String newStatusForSerie = status;
+        String newStatusForSeason = status;
+        Boolean userEpisodeIdFound = false;
+
+        UserSerie userSerie = findById(userSerieId);
+
+        if (userSerie.getUserSeasons().size() > 0) {
+
+            for (UserSeason userSeason : userSerie.getUserSeasons()) {
+                if (userSeason.getId().equals(userSeasonId)) {
+                    //pour la user-saison concernée, balayer épisodes
+                    for (UserEpisode userEpisode : userSeason.getUserEpisodes()) {
+                        if (userEpisode.getId().equals(userEpisodeId)) {
+                            // pour le user-episode concerné : màj statut
+                            userEpisode.setStatus(status);
+                            userEpisode.setStatusDate(LocalDate.now());
+                            userEpisodeService.update(userEpisode);
+                            //boolean user-Episode ok
+                            userEpisodeIdFound = true;
+                        } else {
+                            //pour les autres épisodes, on balaye leur statut
+                            //pour vérifier si user-season et user-serie doivent être mis à ONGOING (en cours)
+                            if (!userEpisode.getStatus().equals(status)) {
+                                newStatusForSeason = "ONGOING";
+                                newStatusForSerie = "ONGOING";
+                            }
+                        }
+                    }
+                    if (userEpisodeIdFound) {
+                        //mettre à jour le statut de user-season si besoin
+                        if (!userSeason.getStatus().equals(newStatusForSeason)) {
+                            userSeason.setStatus(newStatusForSerie);
+                            userSeason.setStatusDate(LocalDate.now());
+                            userSeasonService.updateUserSeason(userSeason);
+                        }
+                    } else {
+                        throw new ResourceNotFoundException("Le user-episode est introuvable");
+                    }
+
+                } else {
+                    //pour les autres seasons, on balaye leur statut pour vérifier si user-serie doit être màs à ONGOING
+                    if (!userSeason.getStatus().equals(status) && !newStatusForSerie.equals("ONGOING")) {
+                        newStatusForSerie = "ONGOING";
+                    }
+                }
+            }
+            if (userEpisodeIdFound) {
+                //mettre à jour le statut de user-serie si besoin
+                if (!userSerie.getStatus().equals(newStatusForSerie)) {
+                    userSerie.setStatus(newStatusForSerie);
+                    userSerie.setStatusDate(LocalDate.now());
+                    update(userSerie);
+                }
+            } else {
+                throw new ResourceNotFoundException("La user-season est introuvable");
+            }
+        }
+
+    }
+
+
 }
