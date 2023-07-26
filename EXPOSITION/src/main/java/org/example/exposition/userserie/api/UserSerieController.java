@@ -1,9 +1,7 @@
 package org.example.exposition.userserie.api;
 
 import org.example.application.IUserSerieService;
-import org.example.domaine.userselection.UserMovie;
 import org.example.domaine.userselection.UserSerie;
-import org.example.exposition.usermovie.dto.UserMovieDetailDto;
 import org.example.exposition.userserie.converter.UserSerieConverter;
 import org.example.exposition.userserie.dto.UserSerieDetailDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +70,7 @@ public class UserSerieController {
     @PutMapping("/status/{userSerieId}/{status}")
     public ResponseEntity<String> updateUserSerieStatus (@PathVariable("userSerieId") Long userSerieId,
                                                          @PathVariable("status") String status){
-        userSerieService.updateUserSerieStatus(userSerieId, status);
+        userSerieService.updateStatusUserSerieAndSeasonsAndEpisodes(userSerieId, status);
         return ResponseEntity.status(HttpStatus.OK).body("Le statut a bien été mis à jour");
         //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le statut n'a pas été mis à jour");
     }

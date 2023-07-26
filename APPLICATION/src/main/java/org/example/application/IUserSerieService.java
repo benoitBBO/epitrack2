@@ -13,6 +13,10 @@ public interface IUserSerieService {
     List<UserSerie> findFirst4ByUserIdOrderByUserRatingDesc(Long userId);
     void updateUserRating(Long userId, Long videoId, Integer rating);
     List<UserSerie> findAllByUserIdOrderByUserRatingDesc(Long userId);
-    void updateUserSerieStatus(Long userSerieId, String status);
+    void updateStatusUserSerieAndSeasonsAndEpisodes(Long userSerieId, String status);
+    //void verifyStatusAllSeasonsForUpdateSerie(Long userSerieId, String status);
 
+    void updateStatusUserSeasonAndEpisodesAndVerifyStatusUserSerie(Long userSerieId, Long userSeasonId, String status);
+
+    void updateStatusUserEpisodeAndVerifyStatusUserSeasonAndSerie(Long userSerieId, Long userSeasonId, Long userEpisodeId, String status);
 }

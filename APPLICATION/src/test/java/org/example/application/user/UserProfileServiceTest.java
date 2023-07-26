@@ -1,6 +1,8 @@
 package org.example.application.user;
 
 import org.example.domaine.exceptions.InputMissingException;
+import org.example.domaine.exceptions.ResourceAlreadyExistsException;
+import org.example.domaine.exceptions.ResourceNotFoundException;
 import org.example.domaine.user.Role;
 import org.example.domaine.user.UserProfile;
 import org.example.infrastructure.repository.user.IUserProfileRepository;
@@ -25,15 +27,35 @@ public class UserProfileServiceTest {
 
     UserProfile mockedUserProfile;
 
-    //@BeforeEach
-    //public void init(){
-    //    mockedUserProfile = new UserProfile();
-    //    mockedUserProfile.setId(65L);
-    //    //...
-    //    when(roleRepository.findByName("ROLE_USER")).thenReturn(Optional.of(mockedRole));
-    //}
+    @BeforeEach
+    public void init(){
+        mockedUserProfile = new UserProfile();
+        mockedUserProfile.setId(65L);
+        mockedUserProfile.setUserName("TestUsername");
+        mockedUserProfile.setPassword("TestPassword");
+        mockedUserProfile.setEmail("test@test.fr");
+        //...
+        when(userProfileRepository.findByUserName("TestUsername")).thenReturn(Optional.of(mockedUserProfile));
+        when(userProfileRepository.findByUserName("NotFoundUsername")).thenReturn(Optional.of(new UserProfile()));
+    }
     @Test
     public void test_should_inputMissingException_when_findByUsernameEmpty(){
-        assertThrows(InputMissingException.class, () -> userProfileService.findUserProfileByUsername(""));
+        assertThrows(InputMissingException.class,
+                () -> userProfileService.findUserProfileByUsername(""));
+    }
+    @Test
+    public void test_should_resourceNotFoundException_when_findByUsernameNotExist(){
+        assertThrows(ResourceNotFoundException.class,
+                () -> userProfileService.findUserProfileByUsername("NotFoundUserName"));
+    }
+    @Test
+    public void test_should_return_UserProfile_when_findByUsernameOK(){
+        assertThat(userProfileService.findUserProfileByUsername("TestUsername").equals(mockedUserProfile));
+    }
+
+    @Test
+    public void test_should_resourceAlreadyExistsException_when_createExistingUser(){
+        assertThrows(ResourceAlreadyExistsException.class,
+                () -> userProfileService.createUserProfile(mockedUserProfile));
     }
 }
