@@ -20,9 +20,6 @@ public class MovieController {
     @Autowired
     MovieConverter movieConverter;
     @PostMapping
-//    public void createMovie(@RequestBody MovieDetailDto detailDto) {
-//        movieService.create(movieConverter.convertDetailDtoToEntity(detailDto));
-//    }
     public void createMovie(@RequestBody TmdbDto detailDto) {
         movieService.create(movieConverter.convertTmdbDtoToEntity(detailDto));
     }

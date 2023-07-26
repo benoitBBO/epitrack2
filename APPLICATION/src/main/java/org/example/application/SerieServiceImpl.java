@@ -1,15 +1,23 @@
 package org.example.application;
 
 import org.example.application.util.ICalculService;
+import org.example.domaine.catalog.Episode;
 import org.example.domaine.catalog.Movie;
+import org.example.domaine.catalog.Season;
 import org.example.domaine.catalog.Serie;
+import org.example.domaine.userselection.UserEpisode;
 import org.example.domaine.userselection.UserRating;
+import org.example.domaine.userselection.UserSeason;
+import org.example.domaine.userselection.UserSerie;
 import org.example.infrastructure.repository.ISerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SerieServiceImpl implements ISerieService {
@@ -26,9 +34,33 @@ public class SerieServiceImpl implements ISerieService {
 
     @Override
     public Serie findById(Long id) {
-        Optional<Serie> clientOptional = serieRepository.findById(id);
-        return clientOptional.orElse(null);
+        Optional<Serie> serieOptional = serieRepository.findById(id);
+        if (!serieOptional.isPresent()){
+            throw new EntityNotFoundException("La serie est instrouvable");
+        }
+
+        Serie serie = serieOptional.get();
+        //trier la serie par numéro de saison et numéro d'épisode
+        for (Season season : serie.getSeasons()) {
+            List<Episode> episodeSortedList = sortByEpisodeNumber(season.getEpisodes());
+            season.setEpisodes(episodeSortedList);
+        }
+        List<Season> seasonSortedList = sortBySeasonNumber(serie.getSeasons());
+        serie.setSeasons(seasonSortedList);
+
+        return serie;
     }
+    List<Season> sortBySeasonNumber (List<Season> seasonList){
+        return seasonList.stream()
+                .sorted(Comparator.comparingInt( (season) -> season.getSeasonNumber()))
+                .collect(Collectors.toList());
+    }
+    List<Episode> sortByEpisodeNumber (List<Episode> episodeList){
+        return episodeList.stream()
+                .sorted(Comparator.comparingInt( (episode) -> episode.getEpisodeNumber()))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public List<Serie> findAll() {
         return serieRepository.findAll();
