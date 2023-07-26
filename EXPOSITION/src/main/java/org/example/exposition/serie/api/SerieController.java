@@ -10,6 +10,7 @@ import org.example.exposition.serie.dto.SerieDetailDto;
 import org.example.exposition.serie.dto.SerieMinDto;
 import org.example.exposition.tmdb.dto.TmdbDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,9 +26,6 @@ public class SerieController {
     SerieConverter serieConverter;
 
     @PostMapping
-//    public void createSerie(@RequestBody Serie serie){
-//        service.create(serie);
-//    }
     public void createSerie(@RequestBody TmdbDto json){
         service.create(serieConverter.convertTmdbDtoToEntity(json));
     }
@@ -40,8 +38,9 @@ public class SerieController {
     }
 
     @GetMapping("/{id}")
-    public SerieDetailDto findyById(@PathVariable("id") Long id){
-        return serieConverter.convertEntityToDetailDto(service.findById(id));
+    public ResponseEntity<SerieDetailDto> findyById(@PathVariable("id") Long id){
+        SerieDetailDto serieDetailDto = serieConverter.convertEntityToDetailDto(service.findById(id));
+        return ResponseEntity.ok().body(serieDetailDto);
     }
 
     @PutMapping
@@ -53,6 +52,7 @@ public class SerieController {
     public void deleteSerie(@PathVariable("id") Long id){
         service.deleteSerie(id);
     }
+
     @GetMapping
     public List<SerieDetailDto> findAll(){
         List<Serie> seriesEntity = service.findAll();
@@ -64,8 +64,14 @@ public class SerieController {
         return seriesDetailDto;
     }
     @GetMapping("/best4")
-    public List<Serie> findFirst4ByOrderByTotalRatingDesc(){
-        return service.findFirst4ByOrderByTotalRatingDesc();
+    public List<SerieMinDto> findFirst4ByOrderByTotalRatingDesc(){
+        List<Serie> series = service.findFirst4ByOrderByTotalRatingDesc();
+        List<SerieMinDto> serieMinDtoList = new ArrayList<>();
+        for (Serie serie : series) {
+            SerieMinDto serieMinDto = serieConverter.convertEntityToMinDto(serie);
+            serieMinDtoList.add(serieMinDto);
+        }
+        return serieMinDtoList;
     }
 
     @GetMapping("/search")

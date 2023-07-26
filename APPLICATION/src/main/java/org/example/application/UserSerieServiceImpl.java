@@ -19,8 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserSerieServiceImpl implements IUserSerieService {
@@ -47,8 +49,29 @@ public class UserSerieServiceImpl implements IUserSerieService {
         if (!optionalTask.isPresent()) {
             throw new EntityNotFoundException("La serie du user avec l'id "+id+" est introuvable");
         }
-        return optionalTask.get();
+        UserSerie userSerie = optionalTask.get();
+        //trier la user-serie par numéro de saison et numéro d'épisode
+        for (UserSeason userSeason : userSerie.getUserSeasons()) {
+            List<UserEpisode> userEpisodeSortedList = sortByEpisodeNumber(userSeason.getUserEpisodes());
+            userSeason.setUserEpisodes(userEpisodeSortedList);
+        }
+        List<UserSeason> userSeasonSortedList = sortBySeasonNumber(userSerie.getUserSeasons());
+        userSerie.setUserSeasons(userSeasonSortedList);
+
+        return userSerie;
     }
+
+    List<UserSeason> sortBySeasonNumber (List<UserSeason> userSeasonList){
+        return userSeasonList.stream()
+                .sorted(Comparator.comparingInt( (userSeason) -> userSeason.getSeason().getSeasonNumber()))
+                .collect(Collectors.toList());
+    }
+    List<UserEpisode> sortByEpisodeNumber (List<UserEpisode> userEpisodeList){
+        return userEpisodeList.stream()
+                .sorted(Comparator.comparingInt( (userEpisode) -> userEpisode.getEpisode().getEpisodeNumber()))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public UserSerie update(UserSerie userSerie) {
         return userSerieRepository.save(userSerie);
