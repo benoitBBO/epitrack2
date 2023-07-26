@@ -3,6 +3,7 @@ package org.example.application;
 
 import org.example.domaine.catalog.Movie;
 import org.example.domaine.catalog.Serie;
+import org.example.domaine.userselection.UserRating;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface ISerieService {
     List<Serie> findFirst4ByOrderByTotalRatingDesc();
     List<Serie> findByTitleContains(String title);
 
-    void updateSerieTotalRating(Serie serie, Integer userRating);
+    void updateSerieTotalRatingAndVoteCount(Serie serie, UserRating userRating);
 }

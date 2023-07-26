@@ -27,8 +27,8 @@ public class UserMovieController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Votre film a bien été ajouté à votre catalogue");
     }
     @GetMapping("/{id}")
-    public UserMovie findById(@PathVariable("id")Long id) {
-        return userMovieService.findById(id);
+    public UserMovieDetailDto findById(@PathVariable("id")Long id) {
+        return userMovieConverter.convertEntityToDetailDto(userMovieService.findById(id));
     }
     @GetMapping
     public List<UserMovie> findAll(){

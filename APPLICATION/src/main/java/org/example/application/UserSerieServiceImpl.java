@@ -1,12 +1,17 @@
 package org.example.application;
 
+import org.example.application.util.ICalculService;
+import org.example.domaine.catalog.Movie;
+import org.example.domaine.catalog.Serie;
 import org.example.domaine.exceptions.ResourceAlreadyExistsException;
 import org.example.domaine.exceptions.ResourceNotFoundException;
 import org.example.domaine.user.UserProfile;
 import org.example.domaine.userselection.UserEpisode;
 import org.example.domaine.userselection.UserMovie;
+import org.example.domaine.userselection.UserRating;
 import org.example.domaine.userselection.UserSeason;
 import org.example.domaine.userselection.UserSerie;
+import org.example.infrastructure.repository.ISerieRepository;
 import org.example.infrastructure.repository.IUserSerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,21 +67,22 @@ public class UserSerieServiceImpl implements IUserSerieService {
             return null;
         }
     }
-    @Override
-    public void updateUserRating(Long userId, Long videoId, Integer rating) {
-        Optional<UserSerie> userSerieOptional = userSerieRepository.findByUserIdAndSerieId(userId, videoId);
+
+    public void updateUserRating(UserRating userRating) {
+        //Update UserSerieRating
+        Optional<UserSerie> userSerieOptional = userSerieRepository.findByUserIdAndSerieId(userRating.getUserId(), userRating.getMovieId());
         if (userSerieOptional.isEmpty()){
             throw new ResourceNotFoundException();
         }
         else {
             //mise à jour de la note utilisateur (rating)
-            UserSerie userSerie = userSerieOptional.get();
-            userSerie.setUserRating(rating);
-            userSerieRepository.save(userSerie);
+            userSerieRepository.updateUserSerieRating(userRating.getUserMovieId(), userRating.getNewRating());
 
-            //recalcul note global du film au catalogue
-            serieService.updateSerieTotalRating(userSerie.getSerie(), rating);
+            //Update TotalRating et VoteCount
+            UserSerie userSerie = userSerieOptional.get();
+            serieService.updateSerieTotalRatingAndVoteCount(userSerie.getSerie(), userRating);
         }
+
     }
 
     @Override

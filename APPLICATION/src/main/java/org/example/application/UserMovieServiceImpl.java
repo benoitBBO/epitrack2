@@ -72,22 +72,6 @@ public class UserMovieServiceImpl implements IUserMovieService {
     public List<UserMovie> findAllByUserIdOrderByUserRatingDesc(Long userId) {
         return userMovieRepository.findAllByUserIdOrderByUserRatingDesc(userId);
     }
-//    @Override
-//    public void updateUserRating(Long userId, Long videoId, Integer rating) {
-//        Optional<UserMovie> userMovieOptional = userMovieRepository.findByUserIdAndMovieId(userId, videoId);
-//        if (userMovieOptional.isEmpty()){
-//            throw new ResourceNotFoundException();
-//        }
-//        else {
-//            //mise à jour de la note utilisateur (rating)
-//            UserMovie userMovie = userMovieOptional.get();
-//            userMovie.setUserRating(rating);
-//            userMovieRepository.save(userMovie);
-//
-//            //recalcul note global du film au catalogue
-//            movieService.updateMovieTotalRatingAndVoteCount(userMovie.getMovie(), rating);
-//        }
-//    }
 
     @Override
     public void updateUserRating(UserRating userRating) {
@@ -104,9 +88,6 @@ public class UserMovieServiceImpl implements IUserMovieService {
             UserMovie userMovie = userMovieOptional.get();
             movieService.updateMovieTotalRatingAndVoteCount(userMovie.getMovie(), userRating);
         }
-
-
-
 
     }
     @Override
