@@ -62,22 +62,7 @@ public class UserMovieController {
         }
         return userMoviesDetailDto;
     }
-  
-//    @PutMapping("/vote/{userId}/{movieId}/{vote}")
-//    public ResponseEntity<String> updateUserMovieRating(@PathVariable("userId") Long userId,
-//                                                        @PathVariable("movieId") Long movieId,
-//                                                        @PathVariable("vote") Integer rating){
-//        userMovieService.updateUserRating(userId, movieId, rating);
-//        return ResponseEntity.status(HttpStatus.OK).body("Vote bien pris en compte");
-//    }
-    //@PutMapping("/status/{userId}/{movieId}/{status}")
-    //public ResponseEntity<String> updateUserMovieStatus (@PathVariable("userId") Long userId,
-    //                                                @PathVariable("movieId") Long movieId,
-    //                                                @PathVariable("status") Integer status){
-    //    userMovieService.updateUserMovieStatus(userId, movieId, status);
-    //    return ResponseEntity.status(HttpStatus.OK).body("Le statut a bien été mis à jour");
-    //}
-    @Transactional
+
     @PutMapping("/rating")
     public ResponseEntity<String> userMovieRating(@RequestBody UserRating userRating) {
         userMovieService.updateUserRating(userRating);

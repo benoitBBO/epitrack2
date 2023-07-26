@@ -33,11 +33,6 @@ public class UserSerieController {
         return userSerieConverter.convertEntityToDetailDto(userSerieService.findById(id));
     }
 
-    //@PutMapping
-    //public UserSerie update(@RequestBody UserSerie userSerie){
-    //    return userSerieService.update(userSerie);
-    //}
-
     @GetMapping("/best4/{userId}")
     public List<UserSerieDetailDto> findFirst4ByUserIdOrderByUserRatingDesc(@PathVariable("userId") Long userId){
         System.out.println("UserSerie Controller find First 4 with userId= "+userId);
@@ -71,7 +66,6 @@ public class UserSerieController {
         //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le statut n'a pas été mis à jour");
     }
 
-    @Transactional
     @PutMapping("/rating")
     public ResponseEntity<String> userSerieRating(@RequestBody UserRating userRating) {
         userSerieService.updateUserRating(userRating);

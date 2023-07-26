@@ -58,7 +58,7 @@ public class UserSerieServiceImpl implements IUserSerieService {
         userSerieRepository.deleteById(id);
     }
 
-
+    @Override
     public List<UserSerie> findFirst4ByUserIdOrderByUserRatingDesc(Long userId){
         Optional<List<UserSerie>> optional = userSerieRepository.findFirst4ByUserIdOrderByUserRatingDesc(userId);
         if (optional.isPresent()){
@@ -68,6 +68,8 @@ public class UserSerieServiceImpl implements IUserSerieService {
         }
     }
 
+    @Transactional
+    @Override
     public void updateUserRating(UserRating userRating) {
         //Update UserSerieRating
         Optional<UserSerie> userSerieOptional = userSerieRepository.findByUserIdAndSerieId(userRating.getUserId(), userRating.getMovieId());
