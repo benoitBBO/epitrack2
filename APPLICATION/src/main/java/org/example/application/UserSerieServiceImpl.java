@@ -54,8 +54,12 @@ public class UserSerieServiceImpl implements IUserSerieService {
         return userSerieRepository.save(userSerie);
     }
     @Override
-    public void delete(Long id) {
-        userSerieRepository.deleteById(id);
+    public void delete(Long serieId, Long userId) {
+        Optional<UserSerie> userSerieOptional = userSerieRepository.findByUserIdAndSerieId(userId, serieId);
+        if (!userSerieOptional.isPresent()) {
+            throw new EntityNotFoundException("Le film du user avec l'id "+serieId+" est introuvable");
+        }
+        userSerieRepository.deleteById(userSerieOptional.get().getId());
     }
 
     @Override

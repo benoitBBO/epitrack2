@@ -5,6 +5,7 @@ import org.example.domaine.userselection.UserMovie;
 import org.example.domaine.userselection.UserRating;
 import org.example.exposition.usermovie.converter.UserMovieConverter;
 import org.example.exposition.usermovie.dto.UserMovieDetailDto;
+import org.example.exposition.usermovie.dto.UserMovieMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,15 @@ public class UserMovieController {
     @Autowired
     UserMovieConverter userMovieConverter;
     @PostMapping
-    public ResponseEntity<String> createMovie(@RequestBody UserMovieDetailDto userMovieDetailDto) {
-        userMovieService.create(userMovieConverter.convertDetailDtoToEntity(userMovieDetailDto));
-        return ResponseEntity.status(HttpStatus.CREATED).body("Votre film a bien été ajouté à votre catalogue");
+    public ResponseEntity< List<UserMovieDetailDto> > createMovie(@RequestBody UserMovieDetailDto userMovieDetailDto) {
+        List<UserMovie> updatedUserMoviesEntity = userMovieService.create(userMovieConverter.convertDetailDtoToEntity(userMovieDetailDto));
+        List<UserMovieDetailDto> userMoviesDetailDto = new ArrayList<>();
+
+        for (UserMovie userMovie:updatedUserMoviesEntity) {
+            userMoviesDetailDto.add(userMovieConverter.convertEntityToDetailDto(userMovie));
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(userMoviesDetailDto);
     }
     @GetMapping("/{id}")
     public UserMovieDetailDto findById(@PathVariable("id")Long id) {
@@ -38,9 +45,9 @@ public class UserMovieController {
     public UserMovie update(@RequestBody UserMovie userMovie){
         return userMovieService.update(userMovie);
     }
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id")Long id){
-        userMovieService.delete(id);
+    @DeleteMapping("/{movieId}/{userId}")
+    public void delete(@PathVariable("movieId")Long movieId, @PathVariable("userId")Long userId){
+        userMovieService.delete(movieId, userId);
     }
     @GetMapping("/best4/{userId}")
     public List<UserMovieDetailDto> findFirst4ByUserIdOrderByUserRatingDesc(@PathVariable("userId") Long userId){

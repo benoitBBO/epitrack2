@@ -1,6 +1,7 @@
 package org.example.exposition.userserie.converter;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.example.domaine.user.UserProfile;
 import org.example.domaine.userselection.UserSeason;
 import org.example.domaine.userselection.UserSerie;
 import org.example.exposition.serie.converter.SerieConverter;
@@ -45,5 +46,28 @@ public class UserSerieConverter {
         dto.setUser(userDto);
 
         return dto;
+    }
+
+    public UserSerie convertEntityToDetailDto (UserSerieDetailDto dto){
+        UserSerie entity = new UserSerie();
+        entity.setId(dto.getId());
+        entity.setSerie(serieConverter.convertDetailWithoutSeasonDtoToEntity(dto.getSerie()));
+
+        //Liste user_season
+        List<UserSeason> userSeasonList = new ArrayList<>();
+        for (UserSeasonDto userSeasonDto : dto.getUserSeasons()) {
+            userSeasonList.add(userSeasonConverter.convertDtoToEntity(userSeasonDto));
+        }
+        entity.setUserSeasons(userSeasonList);
+
+        entity.setStatus(dto.getStatus());
+        entity.setUserRating(dto.getUserRating());
+        entity.setStatusDate(dto.getStatusDate());
+
+        UserProfile user = new UserProfile();
+        user.setId(dto.getUser().getId());
+        entity.setUser(user);
+
+        return entity;
     }
 }

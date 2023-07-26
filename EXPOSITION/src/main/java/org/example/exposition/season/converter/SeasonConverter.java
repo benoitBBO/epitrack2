@@ -20,6 +20,12 @@ public class SeasonConverter {
         ModelMapper mapper=new ModelMapper();
         return mapper.map(entity,SeasonDetailWithoutEpisodeDto.class);
     }
+
+    public Season convertDetailWithoutEpisodeDtoToEntity(SeasonDetailWithoutEpisodeDto dto){
+        ModelMapper mapper=new ModelMapper();
+        return mapper.map(dto,Season.class);
+    }
+
     public SeasonDetailDto convertEntityToDetailDto(Season entity){
         ModelMapper mapper=new ModelMapper();
         return mapper.map(entity,SeasonDetailDto.class);
