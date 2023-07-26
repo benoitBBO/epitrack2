@@ -1,5 +1,6 @@
 package org.example.exposition.userseason.converter;
 
+import org.example.domaine.user.UserProfile;
 import org.example.domaine.userselection.UserEpisode;
 import org.example.domaine.userselection.UserSeason;
 import org.example.exposition.episode.converter.EpisodeConverter;
@@ -46,5 +47,27 @@ public class UserSeasonConverter {
         dto.setUser(userDto);
 
         return dto;
+    }
+
+    public UserSeason convertDtoToEntity (UserSeasonDto dto){
+        UserSeason entity = new UserSeason();
+        entity.setId(dto.getId());
+        entity.setSeason(seasonConverter.convertDetailWithoutEpisodeDtoToEntity(dto.getSeason()));
+
+        //Liste user_episode
+        List<UserEpisode> userEpisodeList = new ArrayList<>();
+        for (UserEpisodeDto userEpisodeDto : dto.getUserEpisodes()) {
+            userEpisodeList.add(userEpisodeConverter.convertDtoToEntity(userEpisodeDto));
+        }
+        entity.setUserEpisodes(userEpisodeList);
+
+        entity.setStatus(entity.getStatus());
+        entity.setStatusDate(entity.getStatusDate());
+
+        UserProfile user = new UserProfile();
+        user.setId(dto.getUser().getId());
+        entity.setUser(user);
+
+        return entity;
     }
 }

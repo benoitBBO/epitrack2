@@ -73,9 +73,9 @@ public class UserSerieController {
         return ResponseEntity.status(HttpStatus.OK).body("Vote bien pris en compte");
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id")Long id){
-        userSerieService.delete(id);
+    @DeleteMapping("/{serieId}/{userId}")
+    public void delete(@PathVariable("serieId")Long movieId, @PathVariable("userId")Long userId){
+        userSerieService.delete(movieId, userId);
     }
 
 }

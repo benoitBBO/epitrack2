@@ -23,12 +23,21 @@ public class SerieConverter {
     @Autowired
     ICalculService calculService;
 
-    /*NON UTILISé
-    public Serie convertDetailDtoToEntity(SerieDetailDto dto){
-        ModelMapper mapper=new ModelMapper();
-        return mapper.map(dto,Serie.class);
+
+    public Serie convertDetailWithoutSeasonDtoToEntity(SerieDetailWithoutSeasonDto dto){
+        Serie entity = new Serie();
+        entity.setId(dto.getId());
+        entity.setTitle(dto.getTitle());
+        entity.setOverview(dto.getOverview());
+        entity.setReleaseDate(dto.getReleaseDate());
+        entity.setTotalRating(dto.gettotalRating());
+        entity.setImagePosterUrl(dto.getImagePosterUrl());
+        entity.setImageLandscapeUrl(dto.getImageLandscapeUrl());
+        entity.setImdbRef(dto.getImdbRef());
+        entity.setGenres(dto.getGenres());
+        entity.setActors(dto.getActors());
+        return entity;
     }
-    */
 
     public SerieDetailWithoutSeasonDto convertEntityToDetailWithoutSeasonDto(Serie entity){
         SerieDetailWithoutSeasonDto dto = new SerieDetailWithoutSeasonDto();

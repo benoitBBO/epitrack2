@@ -29,21 +29,6 @@ public class UserMovieConverter {
         return mapper.map(dto, UserMovie.class);
     }
     public UserMovieDetailDto convertEntityToDetailDto(UserMovie entity){
-        /*
-        MovieDetailDto movieDto = new MovieDetailDto();
-        movieDto.setId(entity.getMovie().getId());
-        movieDto.setActors(entity.getMovie().getActors());
-        movieDto.setGenres(entity.getMovie().getGenres());
-        movieDto.setOverview(entity.getMovie().getOverview());
-        movieDto.setTitle(entity.getMovie().getTitle());
-        movieDto.setImageLandscapeUrl(entity.getMovie().getImageLandscapeUrl());
-        movieDto.setImageLandscapeUrl(entity.getMovie().getImageLandscapeUrl());
-        movieDto.setReleaseDate(entity.getMovie().getReleaseDate());
-        movieDto.setImdbRef(entity.getMovie().getImdbRef());
-        movieDto.setTotalRating(entity.getMovie().getTotalRating());
-        movieDto.setVoteCount(entity.getMovie().getVoteCount());
-        */
-
         UserDto userDto = new UserDto();
         userDto.setId(entity.getUser().getId());
 

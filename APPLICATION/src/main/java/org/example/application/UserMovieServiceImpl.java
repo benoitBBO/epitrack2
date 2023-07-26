@@ -31,12 +31,14 @@ public class UserMovieServiceImpl implements IUserMovieService {
     @Autowired
     CalculServiceImpl calculService;
     @Override
-    public void create(UserMovie userMovie) {
+    public List<UserMovie> create(UserMovie userMovie) {
         Optional<UserMovie> userMovieOptional = userMovieRepository.findByUserIdAndMovieId(userMovie.getUser().getId(), userMovie.getMovie().getId());
         if (userMovieOptional.isPresent()){
             throw new ResourceAlreadyExistsException();
         }
         userMovieRepository.save(userMovie);
+
+        return userMovieRepository.findAllByUserIdOrderByUserRatingDesc(userMovie.getUser().getId());
     }
 
     @Override
@@ -59,8 +61,13 @@ public class UserMovieServiceImpl implements IUserMovieService {
     }
 
     @Override
-    public void delete(Long id) {
-        userMovieRepository.deleteById(id);
+    public void delete(Long movieId, Long userId) {
+        Optional<UserMovie> userMovieOptional = userMovieRepository.findByUserIdAndMovieId(userId, movieId);
+        if (!userMovieOptional.isPresent()) {
+            throw new EntityNotFoundException("Le film du user avec l'id "+movieId+" est introuvable");
+        }
+        userMovieRepository.deleteById(userMovieOptional.get().getId());
+
     }
 
 
