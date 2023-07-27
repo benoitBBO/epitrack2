@@ -10,7 +10,7 @@ public interface IUserMovieService {
     UserMovie findById(Long id);
     List<UserMovie> findAll();
     UserMovie update(UserMovie userMovie);
-    void delete(Long movieId, Long userId);
+    List<UserMovie> delete(Long movieId, Long userId);
     List<UserMovie> findFirst4ByUserIdOrderByUserRatingDesc(Long userId);
     List<UserMovie> findAllByUserIdOrderByUserRatingDesc(Long userId);
     void updateUserRating(UserRating userRating);

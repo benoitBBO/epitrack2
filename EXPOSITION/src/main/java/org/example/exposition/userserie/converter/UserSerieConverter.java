@@ -47,27 +47,4 @@ public class UserSerieConverter {
 
         return dto;
     }
-
-    public UserSerie convertEntityToDetailDto (UserSerieDetailDto dto){
-        UserSerie entity = new UserSerie();
-        entity.setId(dto.getId());
-        entity.setSerie(serieConverter.convertDetailWithoutSeasonDtoToEntity(dto.getSerie()));
-
-        //Liste user_season
-        List<UserSeason> userSeasonList = new ArrayList<>();
-        for (UserSeasonDto userSeasonDto : dto.getUserSeasons()) {
-            userSeasonList.add(userSeasonConverter.convertDtoToEntity(userSeasonDto));
-        }
-        entity.setUserSeasons(userSeasonList);
-
-        entity.setStatus(dto.getStatus());
-        entity.setUserRating(dto.getUserRating());
-        entity.setStatusDate(dto.getStatusDate());
-
-        UserProfile user = new UserProfile();
-        user.setId(dto.getUser().getId());
-        entity.setUser(user);
-
-        return entity;
-    }
 }

@@ -12,9 +12,4 @@ public class EpisodeConverter {
         ModelMapper mapper=new ModelMapper();
         return mapper.map(entity,EpisodeDetailDto.class);
     }
-
-    public Episode converDetailDtoToEntity(EpisodeDetailDto dto){
-        ModelMapper mapper=new ModelMapper();
-        return mapper.map(dto,Episode.class);
-    }
 }

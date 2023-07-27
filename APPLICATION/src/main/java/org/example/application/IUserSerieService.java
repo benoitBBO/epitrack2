@@ -8,10 +8,10 @@ import java.util.List;
 
 
 public interface IUserSerieService {
-    void create(UserSerie userSerie);
+    List<UserSerie> create(Long serieId, Long userId);
     UserSerie findById(Long id);
     UserSerie update(UserSerie userSerie);
-    void delete(Long serieId, Long userId);
+    List<UserSerie> delete(Long serieId, Long userId);
     List<UserSerie> findFirst4ByUserIdOrderByUserRatingDesc(Long userId);
     void updateUserRating(UserRating userRating);
     List<UserSerie> findAllByUserIdOrderByUserRatingDesc(Long userId);
