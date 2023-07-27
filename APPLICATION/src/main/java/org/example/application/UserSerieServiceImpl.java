@@ -126,10 +126,11 @@ public class UserSerieServiceImpl implements IUserSerieService {
 
     @Override
     @Transactional
-    public void updateStatusUserSerieAndSeasonsAndEpisodes(Long userSerieId, String status) {
+    public UserSerie updateStatusUserSerieAndSeasonsAndEpisodes(Long userSerieId, String status) {
 
         UserSerie userSerie = findById(userSerieId);
         // si non trouvé, l'exception est déjà levée dans la méthode findById
+        // le userSerie est trié par numéro de saison / épisode
 
         //mise à jour de la serie avec le bon statut
         userSerie.setStatus(status);
@@ -138,9 +139,7 @@ public class UserSerieServiceImpl implements IUserSerieService {
 
         for (UserSeason userSeason : userSerie.getUserSeasons()) {
             //Pour chaque season : si status <> attendu , mettre à jour la userseason avec le bon status
-            System.out.println("userSeason= "+ userSeason);
-
-                if (userSeason.getStatus() != status) {
+               if (userSeason.getStatus() != status) {
                    userSeason.setStatus(status);
                    userSeason.setStatusDate(LocalDate.now());
                    userSeasonService.updateUserSeason(userSeason);
@@ -155,15 +154,18 @@ public class UserSerieServiceImpl implements IUserSerieService {
                 }
             }
         }
+
+        //renvoie en sortie de la user-serie mise à jour
+        return userSerie;
     }
 
     @Override
     @Transactional
-    public void updateStatusUserSeasonAndEpisodesAndVerifyStatusUserSerie(Long userSerieId, Long userSeasonId, String status) {
+    public UserSerie updateStatusUserSeasonAndEpisodesAndVerifyStatusUserSerie(Long userSerieId, Long userSeasonId, String status) {
         String newStatusForSerie = status;
         Boolean userSeasonIdFound = false;
 
-        UserSerie userSerie = findById(userSerieId);
+        UserSerie userSerie = findById(userSerieId);  //triée par numéro saison/épisode
 
         if (userSerie.getUserSeasons().size() > 0) {
 
@@ -203,16 +205,16 @@ public class UserSerieServiceImpl implements IUserSerieService {
         } else {
             throw new ResourceNotFoundException("La user-season est introuvable");
         }
-
+        return userSerie;
     }
 
     @Override
-    public void updateStatusUserEpisodeAndVerifyStatusUserSeasonAndSerie(Long userSerieId, Long userSeasonId, Long userEpisodeId, String status) {
+    public UserSerie updateStatusUserEpisodeAndVerifyStatusUserSeasonAndSerie(Long userSerieId, Long userSeasonId, Long userEpisodeId, String status) {
         String newStatusForSerie = status;
         String newStatusForSeason = status;
         Boolean userEpisodeIdFound = false;
 
-        UserSerie userSerie = findById(userSerieId);
+        UserSerie userSerie = findById(userSerieId);  //triée par numéro saison/épisode
 
         if (userSerie.getUserSeasons().size() > 0) {
 
@@ -265,7 +267,7 @@ public class UserSerieServiceImpl implements IUserSerieService {
                 throw new ResourceNotFoundException("La user-season est introuvable");
             }
         }
-
+        return userSerie;
     }
 
 

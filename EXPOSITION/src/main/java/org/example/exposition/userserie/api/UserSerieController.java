@@ -59,11 +59,31 @@ public class UserSerieController {
     }
 
     @PutMapping("/status/{userSerieId}/{status}")
-    public ResponseEntity<String> updateUserSerieStatus (@PathVariable("userSerieId") Long userSerieId,
+    public ResponseEntity<UserSerieDetailDto> updateUserSerieStatus (@PathVariable("userSerieId") Long userSerieId,
                                                          @PathVariable("status") String status){
-        userSerieService.updateStatusUserSerieAndSeasonsAndEpisodes(userSerieId, status);
-        return ResponseEntity.status(HttpStatus.OK).body("Le statut a bien été mis à jour");
+        UserSerie userSerie = userSerieService.updateStatusUserSerieAndSeasonsAndEpisodes(userSerieId, status);
+        UserSerieDetailDto userSerieDetailDto = userSerieConverter.convertEntityToDetailDto(userSerie);
+        return ResponseEntity.status(HttpStatus.OK).body(userSerieDetailDto);
         //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le statut n'a pas été mis à jour");
+    }
+    @PutMapping("/status/{userSerieId}/{userSeasonId}/{status}")
+    public ResponseEntity<UserSerieDetailDto> updateStatusUserSeasonAndEpisodeAndVerifySerie
+            (@PathVariable("userSerieId") Long userSerieId,
+             @PathVariable("userSeasonId") Long userSeasonId,
+             @PathVariable("status") String status){
+        UserSerie userSerie = userSerieService.updateStatusUserSeasonAndEpisodesAndVerifyStatusUserSerie(userSerieId, userSeasonId, status);
+        UserSerieDetailDto userSerieDetailDto = userSerieConverter.convertEntityToDetailDto(userSerie);
+        return ResponseEntity.status(HttpStatus.OK).body(userSerieDetailDto);
+    }
+    @PutMapping("/status/{userSerieId}/{userSeasonId}/{userEpisodeId}/{status}")
+    public ResponseEntity<UserSerieDetailDto> updateStatusUserEpisodeAndVerifySeasonAndSerie
+            (@PathVariable("userSerieId") Long userSerieId,
+             @PathVariable("userSeasonId") Long userSeasonId,
+             @PathVariable("userEpisodeId") Long userEpisodeId,
+             @PathVariable("status") String status){
+        UserSerie userSerie = userSerieService.updateStatusUserEpisodeAndVerifyStatusUserSeasonAndSerie(userSerieId, userSeasonId, userEpisodeId, status);
+        UserSerieDetailDto userSerieDetailDto = userSerieConverter.convertEntityToDetailDto(userSerie);
+        return ResponseEntity.status(HttpStatus.OK).body(userSerieDetailDto);
     }
 
     @PutMapping("/rating")
