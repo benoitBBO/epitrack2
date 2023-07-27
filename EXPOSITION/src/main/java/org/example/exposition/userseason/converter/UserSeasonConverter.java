@@ -48,26 +48,4 @@ public class UserSeasonConverter {
 
         return dto;
     }
-
-    public UserSeason convertDtoToEntity (UserSeasonDto dto){
-        UserSeason entity = new UserSeason();
-        entity.setId(dto.getId());
-        entity.setSeason(seasonConverter.convertDetailWithoutEpisodeDtoToEntity(dto.getSeason()));
-
-        //Liste user_episode
-        List<UserEpisode> userEpisodeList = new ArrayList<>();
-        for (UserEpisodeDto userEpisodeDto : dto.getUserEpisodes()) {
-            userEpisodeList.add(userEpisodeConverter.convertDtoToEntity(userEpisodeDto));
-        }
-        entity.setUserEpisodes(userEpisodeList);
-
-        entity.setStatus(entity.getStatus());
-        entity.setStatusDate(entity.getStatusDate());
-
-        UserProfile user = new UserProfile();
-        user.setId(dto.getUser().getId());
-        entity.setUser(user);
-
-        return entity;
-    }
 }

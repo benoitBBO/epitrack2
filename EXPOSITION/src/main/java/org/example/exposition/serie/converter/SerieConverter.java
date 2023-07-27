@@ -30,7 +30,7 @@ public class SerieConverter {
         entity.setTitle(dto.getTitle());
         entity.setOverview(dto.getOverview());
         entity.setReleaseDate(dto.getReleaseDate());
-        entity.setTotalRating(dto.gettotalRating());
+        entity.setTotalRating(dto.getTotalRating());
         entity.setImagePosterUrl(dto.getImagePosterUrl());
         entity.setImageLandscapeUrl(dto.getImageLandscapeUrl());
         entity.setImdbRef(dto.getImdbRef());
@@ -45,7 +45,7 @@ public class SerieConverter {
         dto.setTitle(entity.getTitle());
         dto.setOverview(entity.getOverview());
         dto.setReleaseDate(entity.getReleaseDate());
-        dto.settotalRating(entity.getTotalRating());
+        dto.setTotalRating(entity.getTotalRating());
         dto.setImagePosterUrl(entity.getImagePosterUrl());
         dto.setImageLandscapeUrl(entity.getImageLandscapeUrl());
         dto.setImdbRef(entity.getImdbRef());
@@ -59,7 +59,7 @@ public class SerieConverter {
         dto.setTitle(entity.getTitle());
         dto.setOverview(entity.getOverview());
         dto.setReleaseDate(entity.getReleaseDate());
-        dto.settotalRating(entity.getTotalRating());
+        dto.setTotalRating(entity.getTotalRating());
         dto.setImagePosterUrl(entity.getImagePosterUrl());
         dto.setImageLandscapeUrl(entity.getImageLandscapeUrl());
         dto.setImdbRef(entity.getImdbRef());

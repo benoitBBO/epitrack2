@@ -1,7 +1,9 @@
 package org.example.application;
 
 import org.example.application.util.ICalculService;
+import org.example.domaine.catalog.Episode;
 import org.example.domaine.catalog.Movie;
+import org.example.domaine.catalog.Season;
 import org.example.domaine.catalog.Serie;
 import org.example.domaine.exceptions.ResourceAlreadyExistsException;
 import org.example.domaine.exceptions.ResourceNotFoundException;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +31,9 @@ import java.util.stream.Collectors;
 public class UserSerieServiceImpl implements IUserSerieService {
     @Autowired
     IUserSerieRepository userSerieRepository;
+
+    @Autowired
+    ISerieRepository serieRepository;
     @Autowired
     ISerieService serieService;
     @Autowired
@@ -36,12 +42,83 @@ public class UserSerieServiceImpl implements IUserSerieService {
     IUserEpisodeService userEpisodeService;
 
     @Override
-    public void create(UserSerie userSerie) {
-        Optional<UserSerie> optionalUserSerie = userSerieRepository.findByUserIdAndSerieId(userSerie.getUser().getId(), userSerie.getSerie().getId());
+    public List<UserSerie> create(Long serieId, Long userId) {
+        Optional<UserSerie> optionalUserSerie = userSerieRepository.findByUserIdAndSerieId(userId, serieId);
         if (optionalUserSerie.isPresent()){
             throw new ResourceAlreadyExistsException();
         }
+
+        //Creation du UserSerie
+        UserSerie userSerie = new UserSerie();
+        Serie serieOriginale = serieRepository.findById(serieId).get();
+
+        //Creation de l'objet User à passer en table
+        UserProfile user = new UserProfile();
+        user.setId(userId);
+
+        //Creation de l'objet UserSeason à passer en table
+        List<UserSeason> userSeasons = new ArrayList<>();
+
+        List<Season> seasons = serieOriginale.getSeasons();
+        for(Season season : seasons){
+            UserSeason userSeason = new UserSeason();
+
+            //Creation de l'objet Season à passer en table
+            Season seasonTable = new Season();
+            seasonTable.setId(season.getId());
+
+            userSeason.setSeason(seasonTable);
+
+            //Creation de l'objet UserEpisodes à passer en table
+            List<UserEpisode> userEpisodes = new ArrayList<>();
+            for(Episode episode : season.getEpisodes()){
+                UserEpisode userEpisode = new UserEpisode();
+
+                //Creation de l'objet Episode à passer en table
+                Episode episodeTable = new Episode();
+                episodeTable.setId(episode.getId());
+
+                userEpisode.setEpisode(episodeTable);
+                userEpisode.setStatus("UNWATCHED");
+                userEpisode.setStatusDate(LocalDate.now());
+                userEpisode.setUser(user);
+
+                //Push du UserEpisode dans UserEpisodes
+                userEpisodes.add(userEpisode);
+
+            }
+
+            userSeason.setUserEpisodes(userEpisodes);
+
+            //Creation de l'objet Episode à passer en table
+            Episode episode = new Episode();
+
+
+            userSeason.setStatus("UNWATCHED");
+            userSeason.setStatusDate(LocalDate.now());
+            userSeason.setUser(user);
+
+            //Push du UserSeason dans UserSeasons
+            userSeasons.add(userSeason);
+
+        }
+
+        //Creation de l'objet Serie à passer en table
+        Serie serie = new Serie();
+        serie.setId(serieId);
+
+        //Consitution de la couche principale
+        userSerie.setSerie(serie);
+        userSerie.setUserSeasons(userSeasons);
+        userSerie.setStatus("UNWATCHED");
+        userSerie.setStatusDate(LocalDate.now());
+        userSerie.setUserRating(0);
+        userSerie.setUser(user);
+
+
         userSerieRepository.save(userSerie);
+
+        return userSerieRepository.findAllByUserIdOrderByUserRatingDesc(userSerie.getUser().getId()).get();
     }
     @Override
     public UserSerie findById(Long id) {
@@ -77,12 +154,14 @@ public class UserSerieServiceImpl implements IUserSerieService {
         return userSerieRepository.save(userSerie);
     }
     @Override
-    public void delete(Long serieId, Long userId) {
+    public List<UserSerie> delete(Long serieId, Long userId) {
         Optional<UserSerie> userSerieOptional = userSerieRepository.findByUserIdAndSerieId(userId, serieId);
         if (!userSerieOptional.isPresent()) {
             throw new EntityNotFoundException("Le film du user avec l'id "+serieId+" est introuvable");
         }
         userSerieRepository.deleteById(userSerieOptional.get().getId());
+
+        return userSerieRepository.findAllByUserIdOrderByUserRatingDesc(userSerieOptional.get().getUser().getId()).get();
     }
 
     @Override

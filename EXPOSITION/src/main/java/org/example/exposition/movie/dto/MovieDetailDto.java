@@ -69,11 +69,11 @@ public class MovieDetailDto {
         this.releaseDate = releaseDate;
     }
 
-    public Integer gettotalRating() {
+    public Integer getTotalRating() {
         return totalRating;
     }
 
-    public void settotalRating(Integer totalRating) {
+    public void setTotalRating(Integer totalRating) {
         this.totalRating = totalRating;
     }
 

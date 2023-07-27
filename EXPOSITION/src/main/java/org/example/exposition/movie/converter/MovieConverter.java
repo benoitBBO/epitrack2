@@ -33,7 +33,7 @@ public class MovieConverter {
         dto.setTitle(entity.getTitle());
         dto.setOverview(entity.getOverview());
         dto.setReleaseDate(entity.getReleaseDate());
-        dto.settotalRating(entity.getTotalRating());
+        dto.setTotalRating(entity.getTotalRating());
         dto.setImagePosterUrl(entity.getImagePosterUrl());
         dto.setImageLandscapeUrl(entity.getImageLandscapeUrl());
         dto.setGenres(entity.getGenres());

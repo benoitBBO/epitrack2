@@ -61,13 +61,14 @@ public class UserMovieServiceImpl implements IUserMovieService {
     }
 
     @Override
-    public void delete(Long movieId, Long userId) {
+    public List<UserMovie> delete(Long movieId, Long userId) {
         Optional<UserMovie> userMovieOptional = userMovieRepository.findByUserIdAndMovieId(userId, movieId);
         if (!userMovieOptional.isPresent()) {
             throw new EntityNotFoundException("Le film du user avec l'id "+movieId+" est introuvable");
         }
         userMovieRepository.deleteById(userMovieOptional.get().getId());
 
+        return userMovieRepository.findAllByUserIdOrderByUserRatingDesc(userMovieOptional.get().getUser().getId());
     }
 
 

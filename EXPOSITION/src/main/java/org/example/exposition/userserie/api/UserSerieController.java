@@ -4,6 +4,7 @@ import org.example.application.IUserSerieService;
 import org.example.domaine.userselection.UserMovie;
 import org.example.domaine.userselection.UserRating;
 import org.example.domaine.userselection.UserSerie;
+import org.example.exposition.usermovie.dto.UserMovieDetailDto;
 import org.example.exposition.userserie.converter.UserSerieConverter;
 import org.example.exposition.userserie.dto.UserSerieDetailDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,17 @@ public class UserSerieController {
     IUserSerieService userSerieService;
     @Autowired
     UserSerieConverter userSerieConverter;
-    @PostMapping //TODO mettre un DTO + converter
-    public void create(@RequestBody UserSerie userSerie) {
-        userSerieService.create(userSerie);
+
+    @PostMapping ("/{serieId}/{userId}")
+    public ResponseEntity< List<UserSerieDetailDto> > create(@PathVariable("serieId")Long serieId, @PathVariable("userId")Long userId) {
+        List<UserSerie> updatedUserSeriesEntity = userSerieService.create(serieId, userId);
+        List<UserSerieDetailDto> userSeriesDetailDto = new ArrayList<>();
+
+        for (UserSerie userSerie:updatedUserSeriesEntity) {
+            userSeriesDetailDto.add(userSerieConverter.convertEntityToDetailDto(userSerie));
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(userSeriesDetailDto);
     }
 
     @GetMapping("/{id}")
@@ -74,8 +83,15 @@ public class UserSerieController {
     }
 
     @DeleteMapping("/{serieId}/{userId}")
-    public void delete(@PathVariable("serieId")Long movieId, @PathVariable("userId")Long userId){
-        userSerieService.delete(movieId, userId);
+    public ResponseEntity< List<UserSerieDetailDto> > delete(@PathVariable("serieId")Long serieId, @PathVariable("userId")Long userId){
+        List<UserSerie> updatedUserSeriesEntity = userSerieService.delete(serieId, userId);
+        List<UserSerieDetailDto> userSeriesDetailDto = new ArrayList<>();
+
+        for (UserSerie userSerie:updatedUserSeriesEntity) {
+            userSeriesDetailDto.add(userSerieConverter.convertEntityToDetailDto(userSerie));
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(userSeriesDetailDto);
     }
 
 }

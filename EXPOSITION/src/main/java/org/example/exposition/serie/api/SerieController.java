@@ -64,14 +64,14 @@ public class SerieController {
         return seriesDetailDto;
     }
     @GetMapping("/best4")
-    public List<SerieMinDto> findFirst4ByOrderByTotalRatingDesc(){
+    public List<SerieDetailDto> findFirst4ByOrderByTotalRatingDesc(){
         List<Serie> series = service.findFirst4ByOrderByTotalRatingDesc();
-        List<SerieMinDto> serieMinDtoList = new ArrayList<>();
+        List<SerieDetailDto> serieDetailDtoList = new ArrayList<>();
         for (Serie serie : series) {
-            SerieMinDto serieMinDto = serieConverter.convertEntityToMinDto(serie);
-            serieMinDtoList.add(serieMinDto);
+            SerieDetailDto serieDetailDto = serieConverter.convertEntityToDetailDto(serie);
+            serieDetailDtoList.add(serieDetailDto);
         }
-        return serieMinDtoList;
+        return serieDetailDtoList;
     }
 
     @GetMapping("/search")

@@ -45,9 +45,17 @@ public class UserMovieController {
     public UserMovie update(@RequestBody UserMovie userMovie){
         return userMovieService.update(userMovie);
     }
+
     @DeleteMapping("/{movieId}/{userId}")
-    public void delete(@PathVariable("movieId")Long movieId, @PathVariable("userId")Long userId){
-        userMovieService.delete(movieId, userId);
+    public ResponseEntity< List<UserMovieDetailDto> > delete(@PathVariable("movieId")Long movieId, @PathVariable("userId")Long userId){
+        List<UserMovie> updatedUserMoviesEntity = userMovieService.delete(movieId, userId);
+        List<UserMovieDetailDto> userMoviesDetailDto = new ArrayList<>();
+
+        for (UserMovie userMovie:updatedUserMoviesEntity) {
+            userMoviesDetailDto.add(userMovieConverter.convertEntityToDetailDto(userMovie));
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(userMoviesDetailDto);
     }
     @GetMapping("/best4/{userId}")
     public List<UserMovieDetailDto> findFirst4ByUserIdOrderByUserRatingDesc(@PathVariable("userId") Long userId){
