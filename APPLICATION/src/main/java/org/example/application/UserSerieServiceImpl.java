@@ -138,12 +138,14 @@ public class UserSerieServiceImpl implements IUserSerieService {
         return userSerie;
     }
 
-    List<UserSeason> sortBySeasonNumber (List<UserSeason> userSeasonList){
+    @Override
+    public List<UserSeason> sortBySeasonNumber (List<UserSeason> userSeasonList){
         return userSeasonList.stream()
                 .sorted(Comparator.comparingInt( (userSeason) -> userSeason.getSeason().getSeasonNumber()))
                 .collect(Collectors.toList());
     }
-    List<UserEpisode> sortByEpisodeNumber (List<UserEpisode> userEpisodeList){
+    @Override
+    public List<UserEpisode> sortByEpisodeNumber (List<UserEpisode> userEpisodeList){
         return userEpisodeList.stream()
                 .sorted(Comparator.comparingInt( (userEpisode) -> userEpisode.getEpisode().getEpisodeNumber()))
                 .collect(Collectors.toList());

@@ -68,12 +68,24 @@ public class SecurityConfiguration {
 
         // set permissions on endpoints
         http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/users/login").permitAll()
                 .antMatchers(HttpMethod.POST,"/users/register").permitAll()
-                .antMatchers(HttpMethod.POST).permitAll()  //TODO à enlever
-                .antMatchers(HttpMethod.PUT).permitAll()  //TODO à enlever
-                .antMatchers(HttpMethod.DELETE).permitAll()  //TODO à enlever
-                .antMatchers(HttpMethod.GET).permitAll()
+
+                .antMatchers(HttpMethod.POST,"/movies/mass").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST,"/series/mass").hasRole("ADMIN")
+
+                .antMatchers(HttpMethod.POST,"/usermovie").hasRole("USER")
+                .antMatchers(HttpMethod.PUT,"/usermovie/**").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE,"/usermovie/**").hasRole("USER")
+                .antMatchers(HttpMethod.POST,"/userserie").hasRole("USER")
+                .antMatchers(HttpMethod.PUT,"/userserie/**").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE,"/userserie/**").hasRole("USER")
+
+                .antMatchers(HttpMethod.GET, "/movies/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/series/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/movies").permitAll()
+                .antMatchers(HttpMethod.GET, "/series").permitAll()
+
                 .anyRequest().authenticated();
 
         // add JWT filter

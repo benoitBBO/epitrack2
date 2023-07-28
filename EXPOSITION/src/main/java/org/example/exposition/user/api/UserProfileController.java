@@ -2,9 +2,8 @@ package org.example.exposition.user.api;
 
 import org.example.application.user.IUserProfileService;
 import org.example.domaine.user.UserProfile;
-import org.example.exposition.user.dto.UserConverter;
+import org.example.exposition.user.converter.UserConverter;
 import org.example.exposition.user.dto.UserDto;
-import org.example.exposition.user.dto.UserLoginDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,15 +32,11 @@ public class UserProfileController {
 
     }
 
-    @GetMapping("/id/{id}")
-    public UserProfile findUserById(@PathVariable("id") Long id){
-        return userProfileService.findUserProfileById(id);
-    }
-    @PutMapping
+    @PutMapping             //TODO 27/07 non utilisé au Front, à supprimer sauf si fonctionnalité update profil /!\DTO!!
     public void updateUser(@RequestBody UserProfile userProfile){
         userProfileService.updateUserProfile(userProfile);
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")  //TODO 27/07 non utilisé au Front, à supprimer sauf si fonctionnalité suppres profil
     public void deleteUser(@PathVariable("id") Long id){
         userProfileService.deleteUserProfile(id);
     }

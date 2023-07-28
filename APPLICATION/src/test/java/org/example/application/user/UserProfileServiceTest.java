@@ -50,7 +50,7 @@ public class UserProfileServiceTest {
     }
     @Test
     public void test_should_return_UserProfile_when_findByUsernameOK(){
-        assertThat(userProfileService.findUserProfileByUsername("TestUsername").equals(mockedUserProfile));
+        assertThat(userProfileService.findUserProfileByUsername("TestUsername")).isEqualTo(mockedUserProfile);
     }
 
     @Test

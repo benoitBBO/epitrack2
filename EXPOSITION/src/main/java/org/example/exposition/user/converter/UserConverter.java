@@ -1,8 +1,9 @@
-package org.example.exposition.user.dto;
+package org.example.exposition.user.converter;
 
 import org.example.application.role.IRoleService;
 import org.example.domaine.user.Role;
 import org.example.domaine.user.UserProfile;
+import org.example.exposition.user.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
