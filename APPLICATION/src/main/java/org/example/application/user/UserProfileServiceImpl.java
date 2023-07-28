@@ -48,7 +48,26 @@ public class UserProfileServiceImpl implements IUserProfileService {
 
     @Override
     public void updateUserProfile(UserProfile user) {
-        userProfileRepository.save(user);
+        Optional<UserProfile> optionalUserProfile = userProfileRepository.findByUserName(user.getUserName());
+        if (!optionalUserProfile.isPresent()){
+            throw new ResourceNotFoundException();
+        }
+        UserProfile oldUser = optionalUserProfile.get();
+        UserProfile newUser = oldUser;
+        if (oldUser.getPassword() != user.getPassword() && user.getPassword() != null){
+            newUser.setPassword(user.getPassword());
+        }
+        if (oldUser.getEmail() != user.getEmail()){
+            newUser.setEmail(user.getEmail());
+        }
+        if (oldUser.getFirstName() != user.getFirstName()){
+            newUser.setFirstName(user.getFirstName());
+        }
+        if (oldUser.getLastName() != user.getLastName()){
+            newUser.setLastName(user.getLastName());
+        }
+        System.out.println("newUser= "+newUser);
+        userProfileRepository.save(newUser);
     }
 
     @Override
