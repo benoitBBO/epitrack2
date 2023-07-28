@@ -4,6 +4,7 @@ import org.example.application.user.IUserProfileService;
 import org.example.domaine.user.UserProfile;
 import org.example.exposition.user.converter.UserConverter;
 import org.example.exposition.user.dto.UserDto;
+import org.example.exposition.user.dto.UserLoginDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +33,11 @@ public class UserProfileController {
 
     }
 
-    @PutMapping             //TODO 27/07 non utilisé au Front, à supprimer sauf si fonctionnalité update profil /!\DTO!!
-    public void updateUser(@RequestBody UserProfile userProfile){
-        userProfileService.updateUserProfile(userProfile);
+    @PutMapping
+    public ResponseEntity<String> updateUser(@RequestBody UserDto userDto){
+        UserProfile user = userConverter.convertUserDtoToUserProfile(userDto);
+        userProfileService.updateUserProfile(user);
+        return ResponseEntity.status(HttpStatus.OK).body("Utilisateur modifié");
     }
     @DeleteMapping("/{id}")  //TODO 27/07 non utilisé au Front, à supprimer sauf si fonctionnalité suppres profil
     public void deleteUser(@PathVariable("id") Long id){

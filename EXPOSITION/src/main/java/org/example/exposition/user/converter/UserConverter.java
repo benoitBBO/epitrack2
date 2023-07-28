@@ -28,9 +28,11 @@ public class UserConverter {
         //recherche role User
         Role role = roleService.findByName("ROLE_USER");
         userProfile.setRole(role);
-        //encode du password
-        passwordEncoder = new BCryptPasswordEncoder();
-        userProfile.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        //encode du password si reçu
+        if (userDto.getPassword() != null){
+            passwordEncoder = new BCryptPasswordEncoder();
+            userProfile.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        }
 
         return userProfile;
     }
