@@ -37,14 +37,6 @@ public class UserMovieController {
     public UserMovieDetailDto findById(@PathVariable("id")Long id) {
         return userMovieConverter.convertEntityToDetailDto(userMovieService.findById(id));
     }
-    @GetMapping
-    public List<UserMovie> findAll(){
-        return userMovieService.findAll();
-    }
-    @PutMapping
-    public UserMovie update(@RequestBody UserMovie userMovie){
-        return userMovieService.update(userMovie);
-    }
 
     @DeleteMapping("/{movieId}/{userId}")
     public ResponseEntity< List<UserMovieDetailDto> > delete(@PathVariable("movieId")Long movieId, @PathVariable("userId")Long userId){

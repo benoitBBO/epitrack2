@@ -33,7 +33,7 @@ public class RoleServiceTest {
     }
     @Test
     public void test_should_findRoleUser_when_findByNameRoleUser(){
-        assertThat(service.findByName("ROLE_USER").equals(mockedRole));
+        assertThat(service.findByName("ROLE_USER")).isEqualTo(mockedRole);
 
     }
 }

@@ -43,15 +43,6 @@ public class SerieController {
         return ResponseEntity.ok().body(serieDetailDto);
     }
 
-    @PutMapping
-    public void updateSerie(@RequestBody TmdbDto json){
-        service.updateSerie(serieConverter.convertTmdbDtoToEntity(json));
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteSerie(@PathVariable("id") Long id){
-        service.deleteSerie(id);
-    }
 
     @GetMapping
     public List<SerieDetailDto> findAll(){
