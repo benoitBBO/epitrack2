@@ -101,7 +101,7 @@ public class UserMovieServiceImpl implements IUserMovieService {
 
     }
     @Override
-    public void updateUserMovieStatus(Long userMovieId, String status) {
+    public UserMovie updateUserMovieStatus(Long userMovieId, String status) {
         Optional<UserMovie> userMovieOptional = userMovieRepository.findById(userMovieId);
         if (userMovieOptional.isEmpty()){
             throw new ResourceNotFoundException();
@@ -110,7 +110,7 @@ public class UserMovieServiceImpl implements IUserMovieService {
             UserMovie userMovie = userMovieOptional.get();
             userMovie.setStatus(status);
             userMovie.setStatusDate(LocalDate.now());
-            userMovieRepository.save(userMovie);
+            return userMovieRepository.save(userMovie);
         }
     }
 }

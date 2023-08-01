@@ -3,9 +3,11 @@ package org.example.exposition.usermovie.api;
 import org.example.application.IUserMovieService;
 import org.example.domaine.userselection.UserMovie;
 import org.example.domaine.userselection.UserRating;
+import org.example.domaine.userselection.UserSerie;
 import org.example.exposition.usermovie.converter.UserMovieConverter;
 import org.example.exposition.usermovie.dto.UserMovieDetailDto;
 import org.example.exposition.usermovie.dto.UserMovieMinDto;
+import org.example.exposition.userserie.dto.UserSerieDetailDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,9 +80,11 @@ public class UserMovieController {
     }
 
     @PutMapping("/status/{userMovieId}/{status}")
-    public ResponseEntity<String> updateUserMovieStatus(@PathVariable("userMovieId") Long userMovieId,
+    public ResponseEntity<UserMovieDetailDto> updateUserMovieStatus(@PathVariable("userMovieId") Long userMovieId,
                                                         @PathVariable("status") String status) {
-        userMovieService.updateUserMovieStatus(userMovieId, status);
-        return ResponseEntity.status(HttpStatus.OK).body("Suivi bien pris en compte");
+        UserMovie userMovie = userMovieService.updateUserMovieStatus(userMovieId, status);
+        UserMovieDetailDto userMovieDetailDto = userMovieConverter.convertEntityToDetailDto(userMovie);
+
+        return ResponseEntity.status(HttpStatus.OK).body(userMovieDetailDto);
     }
 }

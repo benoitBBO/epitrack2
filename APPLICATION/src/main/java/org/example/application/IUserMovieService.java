@@ -14,7 +14,7 @@ public interface IUserMovieService {
     List<UserMovie> findFirst4ByUserIdOrderByUserRatingDesc(Long userId);
     List<UserMovie> findAllByUserIdOrderByUserRatingDesc(Long userId);
     void updateUserRating(UserRating userRating);
-    void updateUserMovieStatus(Long userMovieId, String status);
+    UserMovie updateUserMovieStatus(Long userMovieId, String status);
 
 
 }
