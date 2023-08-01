@@ -21,8 +21,8 @@ public class MovieServiceImpl implements IMovieService {
     ICalculService calculService;
     @Override
     @Transactional
-    public void create(Movie movie) {
-        movieRepository.save(movie);
+    public Long create(Movie movie) {
+        return movieRepository.save(movie).getId();
     }
     @Override
     public Movie findById(Long id) {

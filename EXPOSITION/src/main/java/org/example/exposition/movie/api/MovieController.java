@@ -7,6 +7,7 @@ import org.example.exposition.movie.dto.MovieDetailDto;
 import org.example.exposition.movie.dto.MovieMinDto;
 import org.example.exposition.tmdb.dto.TmdbDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,8 +21,10 @@ public class MovieController {
     @Autowired
     MovieConverter movieConverter;
     @PostMapping
-    public void createMovie(@RequestBody TmdbDto detailDto) {
-        movieService.create(movieConverter.convertTmdbDtoToEntity(detailDto));
+    public ResponseEntity<Long> createMovie(@RequestBody TmdbDto detailDto) {
+       Long newMovieId = movieService.create(movieConverter.convertTmdbDtoToEntity(detailDto));
+
+        return ResponseEntity.ok().body(newMovieId);
     }
 
     @PostMapping("/mass")
