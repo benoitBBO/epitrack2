@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ISerieService {
 
-    void create(Serie newSerie);
+    Long create(Serie newSerie);
 
     Serie findById(Long id);
     List<Serie> findAll();

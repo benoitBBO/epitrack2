@@ -6,7 +6,7 @@ import org.example.domaine.userselection.UserRating;
 import java.util.List;
 
 public interface IMovieService {
-    void create(Movie movie);
+    Long create(Movie movie);
     Movie findById(Long id);
     List<Movie> findAll();
     Movie update(Movie movie);

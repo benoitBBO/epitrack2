@@ -26,8 +26,10 @@ public class SerieController {
     SerieConverter serieConverter;
 
     @PostMapping
-    public void createSerie(@RequestBody TmdbDto json){
-        service.create(serieConverter.convertTmdbDtoToEntity(json));
+    public ResponseEntity<Long> createSerie(@RequestBody TmdbDto json){
+       Long newSerieId = service.create(serieConverter.convertTmdbDtoToEntity(json));
+
+        return ResponseEntity.ok().body(newSerieId);
     }
 
     @PostMapping("/mass")

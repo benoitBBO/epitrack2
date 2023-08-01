@@ -28,8 +28,8 @@ public class SerieServiceImpl implements ISerieService {
     ICalculService calculService;
 
     @Override
-    public void create(Serie newSerie) {
-        serieRepository.save(newSerie);
+    public Long create(Serie newSerie) {
+        return serieRepository.save(newSerie).getId();
     }
 
     @Override
