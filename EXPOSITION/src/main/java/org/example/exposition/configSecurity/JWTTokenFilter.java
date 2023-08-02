@@ -21,8 +21,6 @@ import java.util.List;
 
 public class JWTTokenFilter extends OncePerRequestFilter {
 
-    private String secret = "&GMxGrrHl1&RtKevTeFBETd!GqL1*GLo"; //TODO voir pour cacher le secret dans application.properties
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain)
@@ -35,7 +33,7 @@ public class JWTTokenFilter extends OncePerRequestFilter {
             return;
         }
         //décode token
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret)).build();
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(Constants.SECRET)).build();
         String token = bearerToken.substring("Bearer ".length());
         DecodedJWT decodedJWT = verifier.verify(token);
         String username = decodedJWT.getSubject();
