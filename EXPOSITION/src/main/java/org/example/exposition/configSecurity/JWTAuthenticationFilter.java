@@ -23,7 +23,6 @@ import java.util.Map;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private String secret = "&GMxGrrHl1&RtKevTeFBETd!GqL1*GLo"; // TODO voir pour cacher le secret dans application.properties
     private AuthenticationManager authenticationManager;
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager){
         this.authenticationManager = authenticationManager;
@@ -52,7 +51,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         springUser.getAuthorities().forEach(au -> {roles.add(au.getAuthority());});
         String jwt = JWT.create().withSubject(springUser.getUsername())
                 .withArrayClaim("roles", roles.toArray(new String[roles.size()]))
-                .sign(Algorithm.HMAC256(secret));
+                .sign(Algorithm.HMAC256(Constants.SECRET));
 
         //objet json pour pouvoir mettre le jeton et le username dans le body
         Map<String, Object> body = new HashMap<>();

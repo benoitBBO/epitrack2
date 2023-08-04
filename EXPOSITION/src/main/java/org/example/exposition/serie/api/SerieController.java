@@ -1,10 +1,7 @@
 package org.example.exposition.serie.api;
 
 import org.example.application.ISerieService;
-import org.example.domaine.catalog.Movie;
 import org.example.domaine.catalog.Serie;
-import org.example.exposition.movie.dto.MovieDetailDto;
-import org.example.exposition.movie.dto.MovieMinDto;
 import org.example.exposition.serie.converter.SerieConverter;
 import org.example.exposition.serie.dto.SerieDetailDto;
 import org.example.exposition.serie.dto.SerieMinDto;
@@ -18,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/series")
-@CrossOrigin(origins = "http://localhost:4200") // Remplacez par l'URL autorisée pour le cross-domain
 public class SerieController {
     @Autowired
     ISerieService service;
